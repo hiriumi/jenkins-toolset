@@ -3,3 +3,8 @@
 ################################################################################
 
 /.vs/JenkinsToolset/v15
+/JenkinsLib/bin/Debug
+/JenkinsLib/obj/Debug
+/JenkinsToolsWpf/bin/Debug
+/JenkinsToolsWpf/obj/Debug
+/packages
