@@ -1,0 +1,23 @@
+﻿<Window x:Class="JenkinsToolsetWpf.InputBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JenkinsToolsetWpf"
+        x:Name="_this"
+        DataContext="{Binding ElementName=_this}"
+        mc:Ignorable="d"
+        Title="{Binding InputBoxTitle}" Height="141.397" Width="449.585" WindowStartupLocation="CenterScreen"
+        ShowInTaskbar="False" ResizeMode="NoResize" Loaded="_this_Loaded">
+    <Grid>
+        <TextBox x:Name="txtInput" DataContext="{Binding ElementName=_this}" Text="{Binding TextValue, Mode=TwoWay}"
+                 Margin="10,0,10,10" TextWrapping="Wrap" Height="23" VerticalAlignment="Bottom" />
+        <TextBlock x:Name="lblMessage" TextWrapping="Wrap" DataContext="{Binding ElementName=_this}"
+                   Text="{Binding MessageText}" Height="71" VerticalAlignment="Top" Margin="10,3,112,0" />
+        <Button x:Name="btnOK" Content="OK" Margin="327,10,10,0"
+                VerticalAlignment="Top" IsDefault="True" Click="btnOK_Click" />
+        <Button x:Name="btnCancel" Content="Cancel" Margin="327,35,10,0"
+                VerticalAlignment="Top" IsCancel="True" Click="btnCancel_Click" />
+
+    </Grid>
+</Window>

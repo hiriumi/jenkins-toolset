@@ -1,0 +1,204 @@
+﻿<Window x:Class="JenkinsToolsetWpf.Forms.BuildHistoryWindow"
+        x:Name="_this"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JenkinsToolsetWpf.Forms"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com"
+        mc:Ignorable="d"
+        PreviewKeyDown="OnPreviewKeyDown"
+        Loaded="OnLoaded"
+        WindowState="Normal"
+        WindowStartupLocation="CenterScreen"
+        DataContext="{Binding ElementName=_this}"
+        Height="650" Width="1000"
+        Title="{Binding Path=JenkinsNode.Name, StringFormat='Builds for {0}'}" d:DesignWidth="600">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="549*"/>
+            <RowDefinition Height="70*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="col01" Width="689*"  />
+            <ColumnDefinition Width="303*"/>
+        </Grid.ColumnDefinitions>
+
+        <ListView x:Name="lstBuilds" 
+                  Grid.Column="0" 
+                  Grid.Row="0" 
+                  SelectionMode="Extended"
+                  DataContext="{Binding ElementName=_this}"
+                  ItemsSource="{Binding Builds}"
+                  AlternationCount="2"
+                  HorizontalAlignment="Stretch" 
+                  VerticalAlignment="Stretch" Grid.ColumnSpan="2">
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Open Selected Build(s) in Browser"
+                              x:Name="mnuOpenBuilds" 
+                              Click="mnuOpenBuilds_Click" MouseDoubleClick="mnuOpenBuilds_Click">
+                        <MenuItem.Icon>
+                            <Image Source="../Images/GoToSourceCode_32x.png" Height="16" Width="16" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Header="Show Built On Node"
+                              x:Name="mnuShowBuiltOnNode" 
+                              Click="mnuShowBuiltOnNode_Click">
+                        <MenuItem.Icon>
+                            <Image Source="../Images/ComputerService_32x.png" Height="16" Width="16" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Header="Export Build History Data To CSV..."
+                              x:Name="mnuExportToCSV"
+                              Click="mnuExportToCSV_Click">
+                        <MenuItem.Icon>
+                            <Image Source="../Images/csv.png" Height="16" Width="16" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    
+                    <MenuItem Header="Delete Selected Build(s)"
+                              x:Name="mnuDeleteBuilds" 
+                              Click="mnuDeleteBuilds_Click">
+                        <MenuItem.Icon>
+                            <Image Source="../Images/i_delete-all-breakpointsBlue_F12.png" Height="16" Width="16" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                </ContextMenu>
+            </ListView.ContextMenu>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn>
+                        <GridViewColumnHeader x:Name="BuildNumberHeader" Cursor="Hand" FontWeight="Bold" Tag="Number"
+                                                Content="Build Number" MouseDown="ColumnHeader_OnMouseDown" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                                    <Image
+                                        Width="25" Height="25"
+                                        ToolTip="{Binding Path=Result}"
+                                        gif:ImageBehavior.RepeatBehavior="Forever"
+                                        gif:ImageBehavior.AnimatedSource="{Binding Path=ImageFileName}" />
+
+                                    <TextBlock Text="{Binding Number}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+
+                    </GridViewColumn>
+
+                    <GridViewColumn>
+                        <GridViewColumnHeader x:Name="ResultHeader" Cursor="Hand" FontWeight="Bold" Tag="Result"
+                                                  Content="Result" MouseDown="ColumnHeader_OnMouseDown" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Result}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn>
+                        <GridViewColumnHeader x:Name="DurationHeader" Cursor="Hand" FontWeight="Bold" Tag="DisplayDuration"
+                                                  Content="Duration" MouseDown="ColumnHeader_OnMouseDown" />
+                            <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding DisplayDuration}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn>
+                        <GridViewColumnHeader x:Name="TimeStampHeader" Cursor="Hand" FontWeight="Bold" Tag="TimeStampDateTime"
+                                                  Content="Time Stamp" MouseDown="ColumnHeader_OnMouseDown" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding TimeStampDateTime}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn>
+                        <GridViewColumnHeader x:Name="UpstreamProjectHeader" Cursor="Hand" FontWeight="Bold" Tag="UpstreamProject"
+                                                  Content="Upstream Project" MouseDown="ColumnHeader_OnMouseDown" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding UpstreamProject}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn>
+                        <GridViewColumnHeader x:Name="BuiltOnHeader" Cursor="Hand" FontWeight="Bold" Tag="BuiltOn"
+                                                  Content="Built On" MouseDown="ColumnHeader_OnMouseDown" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding BuiltOn}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn>
+                        <GridViewColumnHeader x:Name="UrlHeader" Cursor="Hand" FontWeight="Bold" Tag="Url"
+                                                  Content="URL" MouseDown="ColumnHeader_OnMouseDown" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Url}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                </GridView>
+            </ListView.View>
+
+        </ListView>
+        <WrapPanel x:Name="Statistics" Grid.Row="1" Grid.Column="0">
+            <Label x:Name="lblTotal" DataContext="{Binding ElementName=_this}"
+               Content="{Binding Builds.Count}"
+               ContentStringFormat="Last {0} Builds"
+               FontWeight="Bold"
+               HorizontalAlignment="Left" VerticalAlignment="Top" Height="25"/>
+            <Label x:Name="lblSuccessCount" Foreground="Green" DataContext="{Binding ElementName=_this}"
+                Content="{Binding Builds.SuccessCount}"
+                ContentStringFormat="Success: {0}"
+                FontWeight="Bold"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Height="25"/>
+            <Label x:Name="lblFailureCount" Foreground="Red" DataContext="{Binding ElementName=_this}"
+                Content="{Binding Builds.FailureCount}"
+                ContentStringFormat="Failure: {0}"
+                FontWeight="Bold"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Height="25"/>
+            <Label x:Name="lblAbortCount" Foreground="Gray" DataContext="{Binding ElementName=_this}"
+                Content="{Binding Builds.AbortCount}"
+                ContentStringFormat="Aborted: {0}"
+                FontWeight="Bold"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Height="25"/>
+            <Label x:Name="lblSuccessRate" DataContext="{Binding ElementName=_this}"
+                Content="{Binding Builds.DisplaySuccessRate}"
+                ContentStringFormat="Success Rate: {0}"
+                FontWeight="Bold"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Height="25"/>
+            <Label x:Name="lblAverageDuration" DataContext="{Binding ElementName=_this}"
+                Content="{Binding Builds.DisplayAverageDuration}"
+                ContentStringFormat="Average Duration: {0}"
+                FontWeight="Bold"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Height="25"/>
+            <Label x:Name="lblMaxDuration" DataContext="{Binding ElementName=_this}"
+                Content="{Binding Builds.DisplayMaxDuration}"
+                ContentStringFormat="Max Duration: {0}"
+                FontWeight="Bold"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Height="25"/>
+            <Label x:Name="lblMinDuration" DataContext="{Binding ElementName=_this}"
+                Content="{Binding Builds.DisplayMinDuration}"
+                ContentStringFormat="Min Duration: {0}"
+                FontWeight="Bold"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Height="25"/>
+
+
+        </WrapPanel>
+        <Button x:Name="btnClose" Content="Close" Margin="0,0,10,9" Grid.Row="1" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" IsCancel="True" Click="btnClose_Click" Grid.Column="1"/>
+        <Button x:Name="btnCloseAll" Content="Close All Build History Windows" Margin="0,0,90,9" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="192" Click="btnCloseAll_Click" Height="20" Grid.Column="1"/>
+    </Grid>
+</Window>

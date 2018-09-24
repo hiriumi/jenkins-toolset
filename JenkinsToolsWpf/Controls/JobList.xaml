@@ -1,0 +1,532 @@
+﻿<UserControl x:Class="JenkinsToolsetWpf.Controls.JobList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:JenkinsToolsetWpf"
+             xmlns:controls="clr-namespace:JenkinsToolsetWpf.Controls"
+             xmlns:gif="http://wpfanimatedgif.codeplex.com"
+             xmlns:p="clr-namespace:JenkinsToolsetWpf.Properties"
+             xmlns:jenkinsLib="clr-namespace:JenkinsLib;assembly=JenkinsLib"
+             x:Name="_this"
+             mc:Ignorable="d"
+             Loaded="_this_Loaded"
+             KeyDown="JobList_KeyDown"
+             d:DesignWidth="652.76" d:DesignHeight="1283.494">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type ListViewItem}" x:Key="DefaultListViewItemStyle">
+            <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick" />
+            <EventSetter Event="PreviewMouseRightButtonDown" Handler="OnListViewItemPreviewMouseRightButtonDown" />
+            <EventSetter Event="MouseEnter" Handler="OnListViewItemMouseEnter" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="IsSelected" Value="{Binding Selected}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding State}" Value="New">
+                    <Setter Property="Foreground" Value="Blue" />
+                    <Setter Property="FontWeight" Value="Bold" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding State}" Value="UpdatedLocally">
+                    <Setter Property="Foreground" Value="Red" />
+                    <Setter Property="FontWeight" Value="Bold" />
+                </DataTrigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="FontWeight" Value="Bold" />
+                </Trigger>
+
+                <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                    <Setter Property="Background"
+                            Value="{Binding Source={x:Static p:Settings.Default}, Path=OddRowColor, Mode=OneWay}" />
+                </Trigger>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                    <Setter Property="Background"
+                            Value="{Binding Source={x:Static p:Settings.Default}, Path=EvenRowColor, Mode=OneWay}" />
+                </Trigger>
+
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background"
+                            Value="{Binding Source={x:Static p:Settings.Default}, Path=ItemMouseOverBackgroundColor, Mode=OneWay}" />
+                    <Setter Property="Foreground" Value="White" />
+                    <Setter Property="FontWeight" Value="Bold" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="{x:Type TextBox}" x:Key="DefaultTextBoxStyle">
+            <Style.Triggers>
+                <Trigger Property="Text" Value="">
+                    <Setter Property="Background" Value="Pink" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="{x:Type CheckBox}" x:Key="DefaultCheckBoxStyle">
+            <Setter Property="IsChecked" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}, Mode=TwoWay, Path=IsSelected}" />
+            <Setter Property="IsTabStop" Value="False"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <EventSetter Event="Checked" Handler="chkJob_Checked" />
+            <EventSetter Event="Unchecked" Handler="chkJob_Unchecked"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=JenkinsNodeType}" Value="Folder">
+                    <Setter Property="Cursor" Value="Hand"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="col0" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition x:Name="row0" Height="41*" />
+            <RowDefinition x:Name="row1" Height="9*" />
+        </Grid.RowDefinitions>
+        <Button x:Name="btnBack" Click="btnBack_Click" Cursor="Hand" Grid.Row="0" Margin="5" Width="23" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Content="&lt;" />
+        <ComboBox x:Name="cboUrl"
+                  Grid.Row="0"
+                  FontWeight="Bold"
+                  FontSize="15"
+                  VerticalAlignment="Top"
+                  DataContext="{Binding ElementName=_this}"
+                  PreviewKeyDown="cboUrl_PreviewKeyDown"
+                  DropDownClosed="cboUrl_OnDropDownClosed"
+                  SelectedItem="{Binding Path=JenkinsUrl}"
+                  ItemsSource="{Binding Path=UrlHistory}" Margin="30,5,129,0" IsEditable="True" />
+        <Label x:Name="lblJenkinsVersion" FontWeight="Bold"  Grid.Row="0" HorizontalAlignment="Right"
+               DataContext="{Binding ElementName=_this}" Width="119" Height="25" Content="{Binding Path=JenkinsVersion}"
+               ContentStringFormat="Version {0}" Margin="0,5,5,0" VerticalAlignment="Top" />
+        <ListView x:Name="lstJenkinsJobs" SelectionMode="{Binding Source={x:Static p:Settings.Default}, Path=ListViewSelectionMode}" AllowDrop="True"
+                  DataContext="{Binding ElementName=_this}"
+                  ItemsSource="{Binding Path=JenkinsNodes}"
+                  ItemContainerStyle="{StaticResource DefaultListViewItemStyle}"
+                  AlternationCount="2"
+                  FontWeight="{Binding FontWeight, Mode=TwoWay}"
+                  FontSize="{Binding FontSize, Mode=TwoWay}"
+                  FontFamily="{Binding FontFamily, Mode=TwoWay}"
+                  FontStyle="{Binding FontStyle, Mode=TwoWay}"
+                  PreviewMouseLeftButtonDown="lstJenkinsJobs_OnPreviewMouseLeftButtonDown"
+                  PreviewMouseMove="lstJenkinsJobs_OnPreviewMouseMove"
+                  Drop="lstJenkinsJobs_OnDrop"
+                  DragEnter="lstJenkinsJobs_OnDragEnter"
+                  Margin="5,35,5,5">
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Edit Job(s)" x:Name="mnuEditJobs" InputGestureText="Ctrl+E"
+                              Click="mnuEditJobs_Click">
+                        <MenuItem.Icon>
+                            <Image Source="../Images/Edit_grey_32x.png" Height="16" Width="16" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Header="Compare" x:Name="mnuCompareJobs" Click="mnuCompareJobs_Click">
+                        <MenuItem.Icon>
+                            <Image Source="../Images/Compare_16x.png"  Height="16" Width="16" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Header="Rename" x:Name="mnuRename" Click="mnuRename_Click" InputGestureText="F2">
+                        <MenuItem.Icon>
+                            <Image Source="../Images/Rename_32x.png" Height="16" Width="16" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Header="XPath Replace" x:Name="mnuXPathReplace"
+                              Click="mnuXPathReplace_Click">
+                        <MenuItem.Icon>
+                            <Image Source="../Images/XPath_32x.png" Height="16" Width="16" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+
+                    <MenuItem Header="Duplicate Selected Job" x:Name="mnuDuplicateJob" Click="mnuDuplicateJob_Click" InputGestureText="Ctrl+D">
+                        <MenuItem.Icon>
+                            <Image Source="../Images/Copy_32x.png" Height="16" Width="16" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Header="Load Jenkins Job(s) From Disk" x:Name="mnuLoadJob" InputGestureText="Ctrl+L"
+                              Click="mnuLoadJob_Click">
+                        <MenuItem.Icon>
+                            <Image Source="../Images/OpenFolder_32x.png" Height="16" Width="16" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Header="Open Local Temporary Directory" x:Name="mnuOpenLocalTempDir"
+                              Click="mnuOpenLocalTempDir_Click">
+                        <MenuItem.Icon>
+                            <Image Source="../Images/Folder_32x.png" Height="16" Width="16" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem x:Name="mnuCopyJobs" Header="Copy Selected Job(s)" Click="mnuCopyJobs_Click" />
+
+                    <Separator />
+
+                    <MenuItem Header="Save Jenkins Job(s) to Local Disk" x:Name="mnuSaveConfigXml"
+                              InputGestureText="Ctrl+S"
+                              Click="mnuSaveConfigXml_Click">
+                        <MenuItem.Icon>
+                            <Image Source="../Images/SaveAll_32x.png" Height="16" Width="16" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Header="Undo Selected Local Job Change" x:Name="mnuUndoJobChange"
+                              InputGestureText="Ctrl+Z"
+                              Click="mnuUndoJobChange_Click">
+                        <MenuItem.Icon>
+                            <Image Source="../Images/Undo_grey_32x.png" Height="16" Width="16" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <Separator />
+
+                    <MenuItem Header="Open Selected Jobs in Browser" x:Name="mnuGoToJob" InputGestureText="Ctrl+O"
+                              Click="mnuGoToJob_Click">
+                        <MenuItem.Icon>
+                            <Image Source="../Images/GoToSourceCode_32x.png" Height="16" Width="16" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Header="Copy Selected Job Name(s) to Clipboard" x:Name="mnuCopyJobNames"
+                              InputGestureText="Ctrl+C"
+                              Click="mnuCopyJobNames_Click">
+                        <MenuItem.Icon>
+                            <Image Source="../Images/CopyToClipboard_32x.png" Height="16" Width="16" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Header="Copy Selected Job URL(s) to Clipboard" x:Name="mnuCopyJobUrls"
+                              Click="mnuCopyJobUrls_Click">
+                        <MenuItem.Icon>
+                            <Image Source="../Images/CopyLongTextToClipboard_16x.png" Height="16" Width="16" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Header="Deselect All" x:Name="mnuDeselectAll" Click="mnuDeselectAll_Click">
+                        <MenuItem.Icon>
+                            <Image Source="../Images/CheckboxUncheck_disabled_32x.png" Height="16" Width="16" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Header="Pane Settings">
+                        <MenuItem.Icon>
+                            <Image Source="../Images/Builder_32xMD.png" Height="16" Width="16" />
+                        </MenuItem.Icon>
+                        <MenuItem x:Name="mnuFont" Header="Font Settings..." Click="mnuFont_Click">
+                            <MenuItem.Icon>
+                                <Image Source="../Images/Font_32x.png" Height="16" Width="16" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
+
+                    <Separator />
+
+                    <MenuItem x:Name="mnuJenkinServer" Header="Jenkins Server">
+                        <MenuItem.Icon>
+                            <Image Source="../Images/WebConfiguration_32x.png" Height="16" Width="16" />
+                        </MenuItem.Icon>
+                        <MenuItem Header="Push Job Changes" x:Name="mnuPushJobChange" InputGestureText="Ctrl+P"
+                                  Click="mnuPushJobChange_Click">
+                            <MenuItem.Icon>
+                                <Image Source="../Images/Web_32x.png" Height="16" Width="16" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem x:Name="mnuBuildJob" Click="mnuBuildJob_Click" InputGestureText="Ctrl+B">
+                            <MenuItem.Header>
+                                <DockPanel>
+                                    <Label x:Name="lblBuildJobs" Margin="0" Padding="0"
+                                           Content="Build Selected Job(s)" />
+                                </DockPanel>
+
+                            </MenuItem.Header>
+                            <MenuItem.Icon>
+                                <Image Source="../Images/Run_32x.png" Height="16" Width="16" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+
+                        <MenuItem x:Name="mnuCreateFolder" Click="mnuCreateFolder_Click" InputGestureText="Ctrl+N">
+                            <MenuItem.Header>
+                                <DockPanel>
+                                    <Label x:Name="lblCreateFolder" Margin="0" Padding="0"
+                                           Content="Create a New Folder" />
+                                </DockPanel>
+
+                            </MenuItem.Header>
+                            <MenuItem.Icon>
+                                <Image Source="../Images/FolderOpen_32x.png" Height="16" Width="16" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+
+                        <MenuItem Header="Run Test Build(s)" x:Name="mnuRunTestBuild" Click="mnuRunTestBuild_Click" InputGestureText="Ctrl+T">
+                            <MenuItem.Icon>
+                                <Image Source="../Images/testBuild.png" Height="16" Width="16" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+
+                        <MenuItem Header="Enable Selected Jobs" x:Name="mnuEnableJobs" Click="mnuEnableJobs_Click">
+                            <MenuItem.Icon>
+                                <Image Source="../Images/green.gif" Height="16" Width="16" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+
+                        <MenuItem Header="Disable Selected Jobs" x:Name="mnuDisableJobs" Click="mnuDisableJobs_Click">
+                            <MenuItem.Icon>
+                                <Image Source="../Images/disabled.gif" Height="16" Width="16" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+
+                        <MenuItem Header="Delete Selected Jobs" x:Name="mnuDeleteJobs" InputGestureText="Delete"
+                                  Click="mnuDeleteJobs_Click">
+                            <MenuItem.Icon>
+                                <Image Source="../Images/i_delete-all-breakpointsBlue_F12.png" Height="16" Width="16" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
+
+                    <MenuItem x:Name="mnuBuildHistory" Header="Build History..." Click="mnuBuildHistory_Click">
+                        <MenuItem.Icon>
+                            <Image Source="../Images/BuildQueueCircle_32x.png" Height="16" Width="16" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem x:Name="mnuShowNodes" Header="Show Nodes..." Click="mnuShowNodes_Click">
+                        <MenuItem.Icon>
+                            <Image Source="../Images/ComputerService_32x.png" Height="16" Width="16" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                </ContextMenu>
+            </ListView.ContextMenu>
+
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn>
+                        <GridViewColumnHeader x:Name="NodeTypeIcon" FontWeight="Bold" Cursor="Hand" Content="Type"
+                                              MouseDown="ColumnHeader_OnMouseDown"/>
+
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Center">
+                                    <Image
+                                        Width="25" Height="25"
+                                        ToolTip="{Binding Path=_class}"
+                                        gif:ImageBehavior.RepeatBehavior="Forever"
+                                        gif:ImageBehavior.AnimatedSource="{Binding Path=NodeTypeImageFileName}" />
+                                </StackPanel>
+
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn>
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader x:Name="JobNameHeader" Cursor="Hand" FontWeight="Bold" Tag="JobName"
+                                                  Content="Job Name" MouseDown="ColumnHeader_OnMouseDown" />
+                        </GridViewColumn.Header>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+
+                                    <Grid Grid.Row="0" ShowGridLines="True">
+                                        <StackPanel VerticalAlignment="Stretch" Margin="0">
+                                            <CheckBox x:Name="chkJob"
+                                              Style="{StaticResource DefaultCheckBoxStyle}"
+                                              Margin="0"
+                                              VerticalAlignment="Center">
+                                                <Label x:Name="lblJobName"
+                                                   Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}, Mode=Default, Path=Foreground}"
+                                                   Padding="0" VerticalAlignment="Center" Margin="0"
+                                                   HorizontalAlignment="Stretch">
+                                                    <DockPanel HorizontalAlignment="Stretch">
+                                                        <Label Content="{Binding Path=Name, Mode=OneWay}" 
+                                                               FontWeight="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}, Mode=Default, Path=FontWeight}"
+                                                               Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}, Mode=Default, Path=Foreground}"
+                                                               HorizontalAlignment="Stretch"
+                                                               VerticalContentAlignment="Stretch"
+                                                               HorizontalContentAlignment="Stretch"
+                                                               Padding="5"
+                                                               VerticalAlignment="Stretch" 
+                                                               Margin="-1"
+                                                               />
+                                                    </DockPanel>
+                                                </Label>
+
+                                            </CheckBox>
+                                        </StackPanel>
+
+                                    </Grid>
+                                    <Grid x:Name="rowJobDetails" Grid.Row="1" Visibility="Collapsed">
+                                        <TextBlock Padding="2" Margin="2" Text="Job Details here"></TextBlock>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn>
+                        <GridViewColumnHeader x:Name="UrlHeader" Cursor="Hand" FontWeight="Bold" Content="Jenkins URL"
+                                              MouseDown="ColumnHeader_OnMouseDown" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Url}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn>
+                        <GridViewColumnHeader x:Name="StatusIcon" FontWeight="Bold" Cursor="Hand" Content="Status"
+                                              MouseDown="ColumnHeader_OnMouseDown"
+                                              />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Center">
+                                    <Image
+                                        Width="25" Height="25"
+                                        ToolTip="{Binding Path=Color}"
+                                        gif:ImageBehavior.RepeatBehavior="Forever"
+                                        gif:ImageBehavior.AnimatedSource="{Binding Path=ImageFileName}" />
+                                </StackPanel>
+
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+
+            <ListView.Resources>
+                <Style TargetType="ScrollBar">
+                    <EventSetter Event="MouseEnter" Handler="lstJenkinsJobs_OnMouseEnterScrollbar" />
+                </Style>
+                <Style TargetType="GridViewColumnHeader">
+                    <EventSetter Event="MouseEnter" Handler="lstJenkinsJobs_OnMouseEnterGridViewColumnHeader" />
+                </Style>
+            </ListView.Resources>
+        </ListView>
+
+        <Grid x:Name="grdFooter" Grid.Row="1" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="col1" Width="192*"/>
+                <ColumnDefinition x:Name="col2" Width="253*"/>
+                <ColumnDefinition x:Name="col3" Width="208*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25" />
+                <RowDefinition Height="Auto" MinHeight="37" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <WrapPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
+                <TextBlock x:Name="lblFilter" FontWeight="Bold" Text="Filter:" HorizontalAlignment="Left"
+                           VerticalAlignment="Center" Width="42" Margin="5,0,0,0" Height="16" />
+                <TextBox x:Name="txtFilter" FontWeight="Bold" Margin="1,2,0,0" DataContext="{Binding ElementName=_this}"
+                         Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap"
+                         VerticalAlignment="Top"
+                         KeyDown="txtFilter_KeyDown"
+                         PreviewMouseDown="txtFilter_PreviewMouseDown"
+                         ToolTip="Ctrl+F to start typing the filter" Height="18" HorizontalAlignment="Left" Width="406"/>
+                <CheckBox x:Name="chkRegexOn" FontWeight="Bold" Checked="chkRegexOn_Checked" Unchecked="chkRegexOn_Unchecked" Content="Regex On" Margin="3,2,0,0" Height="20" VerticalAlignment="Top" Cursor="Hand" HorizontalAlignment="Left" />
+            </WrapPanel>
+
+            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
+                <WrapPanel >
+                    <Label x:Name="lblUsername" FontWeight="Bold" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="116" Height="24">
+                        Jenkins Username:
+                    </Label>
+                    <TextBox x:Name="txtUsername" FontWeight="Bold" Style="{StaticResource DefaultTextBoxStyle}"
+                             DataContext="{Binding ElementName=_this}" Text="{Binding Path=JenkinsUsername, Mode=TwoWay}"
+                             VerticalAlignment="Center" HorizontalAlignment="Left" Width="174"
+                             TextChanged="txtUserName_OnTextChanged" Height="18" Margin="3" />
+                </WrapPanel>
+                <WrapPanel>
+                    <Label x:Name="lblApiToken" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="71" Height="27" VerticalAlignment="Top">API Token:</Label>
+                    <TextBox x:Name="txtApiToken" FontWeight="Bold" Style="{StaticResource DefaultTextBoxStyle}"
+                             DataContext="{Binding ElementName=_this}" Text="{Binding Path=JenkinsApiToken, Mode=TwoWay}"
+                             VerticalAlignment="Center" HorizontalAlignment="Left" Width="232" 
+                             TextChanged="txtApiToken_OnTextChanged" Height="18" />
+                    <Button x:Name="btnGetApiToken" Content="Get Token" Click="btnGetApiToken_Click" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" Width="62" Margin="2" Cursor="Hand" />
+
+                </WrapPanel>
+            </StackPanel>
+
+
+            <StackPanel VerticalAlignment="Center" Grid.Column="2" Grid.Row="2" Grid.RowSpan="2" Margin="3,6" Height="72">
+                <CheckBox x:Name="chkShowOnlyUnpushedJobs" FontWeight="Bold" Content="Show Unpushed Jobs Only" Cursor="Hand"
+                              Click="chkShowOnlyUnpushedJobs_Click" Height="20" HorizontalAlignment="Left" Width="169" Margin="2" />
+                <CheckBox x:Name="chkLockThisPane" FontWeight="Bold" Content="Lock This Pane" Cursor="Hand"
+                              Click="chkLockThisPane_Click" HorizontalAlignment="Left" Width="115"  Height="20" Margin="2"/>
+                <CheckBox x:Name="chkShowSelectedJobsOnly" FontWeight="Bold" Content="Show Selected Jobs Only" Cursor="Hand"
+                              Click="chkShowSelectedJobsOnly_Click" HorizontalAlignment="Left" Width="169"  Height="20" Margin="2,2,0,2" />
+            </StackPanel>
+
+
+            <StackPanel Grid.Row="2" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="3" VerticalAlignment="Center">
+                <WrapPanel>
+                    <TextBlock x:Name="lblJobCount" HorizontalAlignment="Left" VerticalAlignment="Top"
+                               Height="23" FontWeight="Bold" Margin="3" FontSize="15"
+                               Foreground="{Binding Source={x:Static p:Settings.Default}, Path=ItemMouseOverBackgroundColor}"
+                               DataContext="{Binding ElementName=_this}">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0} job(s) selected out of {1}">
+                                <Binding ElementName="lstJenkinsJobs" Path="SelectedItems.Count" Mode="Default" />
+                                <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type controls:JobList}}" Path="JenkinsNodes.Count" Mode="Default" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </WrapPanel>
+                <WrapPanel>
+                    <TextBlock x:Name="lblSuccessCount" Foreground="Green" HorizontalAlignment="Left" VerticalAlignment="Top"
+                               Height="23" FontWeight="Bold" Margin="3" FontSize="15"
+                               DataContext="{Binding ElementName=_this}">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}Success: {0} ({1})">
+                                <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type controls:JobList}}" Path="JenkinsNodes.SuccessCount" Mode="Default" />
+                                <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type controls:JobList}}" Path="JenkinsNodes.DisplaySuccessRate" Mode="Default" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                    <TextBlock x:Name="lblFailureCount" Foreground="Red" HorizontalAlignment="Left" VerticalAlignment="Top"
+                               Height="23" FontWeight="Bold" Margin="3"
+                               DataContext="{Binding ElementName=_this}">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}Failure: {0} ({1})">
+                                <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type controls:JobList}}" Path="JenkinsNodes.FailureCount" Mode="Default" />
+                                <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type controls:JobList}}" Path="JenkinsNodes.DisplayFailureRate" Mode="Default" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+
+                    <TextBlock x:Name="lblAbortCount" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Top"
+                               Height="23" FontWeight="Bold" Margin="3"
+                               DataContext="{Binding ElementName=_this}">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}Aborted: {0} ({1})">
+                                <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type controls:JobList}}" Path="JenkinsNodes.AbortCount" Mode="Default" />
+                                <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type controls:JobList}}" Path="JenkinsNodes.DisplayAbortRate" Mode="Default" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+
+                    <TextBlock x:Name="lblDisabledCount" Foreground="Black" HorizontalAlignment="Left" VerticalAlignment="Top"
+                               Height="23" FontWeight="Bold" Margin="3"
+                               DataContext="{Binding ElementName=_this}">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}Disabled: {0} ({1})">
+                                <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type controls:JobList}}" Path="JenkinsNodes.DisabledCount" Mode="Default" />
+                                <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type controls:JobList}}" Path="JenkinsNodes.DisplayDisabledRate" Mode="Default" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </WrapPanel>
+
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

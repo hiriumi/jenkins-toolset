@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JenkinsLib", "JenkinsLib\JenkinsLib.csproj", "{8AA24D12-4B8B-4A53-967C-1D7B42C1F8EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JenkinsToolsetWpf", "JenkinsToolsWpf\JenkinsToolsetWpf.csproj", "{740F1A76-4384-48CC-8872-2A15649AE4B9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8AA24D12-4B8B-4A53-967C-1D7B42C1F8EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AA24D12-4B8B-4A53-967C-1D7B42C1F8EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AA24D12-4B8B-4A53-967C-1D7B42C1F8EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AA24D12-4B8B-4A53-967C-1D7B42C1F8EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{740F1A76-4384-48CC-8872-2A15649AE4B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{740F1A76-4384-48CC-8872-2A15649AE4B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{740F1A76-4384-48CC-8872-2A15649AE4B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{740F1A76-4384-48CC-8872-2A15649AE4B9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3CA675F5-E7BC-406B-8088-A9402A374CDF}
+	EndGlobalSection
+EndGlobal

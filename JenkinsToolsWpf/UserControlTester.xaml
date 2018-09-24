@@ -1,0 +1,16 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:JenkinsToolsetWpf"
+    xmlns:Controls="clr-namespace:JenkinsToolsetWpf.Controls" x:Class="JenkinsToolsetWpf.UserControlTester"
+    mc:Ignorable="d"
+    Title="UserControlTester" Height="300" Width="300">
+    <Grid>
+
+        <Controls:Circle Diameter="30" Fill="BlueViolet" HorizontalAlignment="Left" Height="100" Margin="10,19,0,0"
+                         VerticalAlignment="Top" Width="100" />
+
+    </Grid>
+</Window>

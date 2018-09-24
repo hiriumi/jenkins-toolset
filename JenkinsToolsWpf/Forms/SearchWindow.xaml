@@ -1,0 +1,18 @@
+﻿<Window x:Class="JenkinsToolsetWpf.Forms.SearchWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JenkinsToolsetWpf.Controls"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Title="SearchWindow" Height="556.184" Width="587.052">
+    <Grid>
+        <Label x:Name="lblLeftPaneUrl" Content="Left Panel URL:" HorizontalAlignment="Left" Margin="5,7,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.454,0.055" Width="89"/>
+        <TextBox Height="23" Margin="109,10,10,0" IsReadOnly="True" TextWrapping="Wrap" Text="{Binding LeftPaneUrl}" VerticalAlignment="Top"/>
+        <Label x:Name="lblRightPaneUrl" Content="Right Panel URL:" HorizontalAlignment="Left" Margin="5,35,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.454,0.055" Width="99"/>
+        <TextBox Height="23" Margin="109,38,10,0" IsReadOnly="True" TextWrapping="Wrap" Text="{Binding RightPaneUrl}" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>

@@ -1,0 +1,184 @@
+﻿<Window x:Class="JenkinsToolsetWpf.Forms.Nodes"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JenkinsToolsetWpf.Forms"
+        xmlns:p="clr-namespace:JenkinsToolsetWpf.Properties"
+        mc:Ignorable="d"
+        x:Name="_this"
+        PreviewKeyDown="Nodes_OnPreviewKeyDown"
+        Loaded="Nodes_OnLoaded"
+        Title="Jenkins Nodes" Height="783.927" Width="907.505" ShowInTaskbar="False" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="34*"/>
+            <RowDefinition Height="665*"/>
+            <RowDefinition Height="54*"/>
+        </Grid.RowDefinitions>
+        <ComboBox x:Name="cbUrl"
+                  Grid.Row="0"
+                  FontWeight="Bold"
+                  FontSize="15"
+                  VerticalAlignment="Top"
+                  DataContext="{Binding ElementName=_this}"
+                  DropDownClosed="cbUrl_OnDropDownClosed"
+                  SelectedItem="{Binding Path=JenkinsUrl}"
+                  ItemsSource="{Binding Path=JenkinsApiCredentials.Keys, Mode=OneWay}" Margin="5,5,5,0" IsEditable="False"
+                  Text="{Binding Path=BaseUrl}" Height="26"/>
+
+        <ListView x:Name="lstNodes" 
+                  Grid.Row="1"
+                  SelectionMode="Extended"
+                  VerticalAlignment="Top"
+                  VerticalContentAlignment="Stretch"
+                  DataContext="{Binding ElementName=_this}"
+                  ItemsSource="{Binding Path=Computers}"
+                  AlternationCount="2">
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Open Selected Node(s) in Browser"
+                              x:Name="mnuOpenNodes" 
+                              Click="mnuOpenNodes_Click">
+                        <MenuItem.Icon>
+                            <Image Source="../Images/GoToSourceCode_32x.png" Height="16" Width="16" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+
+            </ListView.ContextMenu>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn>
+                        <GridViewColumnHeader 
+                            x:Name="NodeNameHeader" 
+                            Cursor="Hand" 
+                            FontWeight="Bold" 
+                            Tag="NodeName" 
+                            Content="Name" 
+                            MouseDown="ColumnHeader_OnMouseDown" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <WrapPanel>
+                                    <Image Width="25" Height="25" Source="{Binding Path=ImageFileName}"/>
+                                    <TextBlock Text="{Binding displayName}" />
+                                </WrapPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn>
+                        <GridViewColumnHeader 
+                            x:Name="NodeTypeHeader" 
+                            Cursor="Hand" 
+                            FontWeight="Bold" 
+                            Tag="NodeType" 
+                            Content="Node Type" 
+                            MouseDown="ColumnHeader_OnMouseDown" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding monitorData.ArchitectureMonitor}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn>
+                        <GridViewColumnHeader 
+                            x:Name="MemorySizeHeader" 
+                            Cursor="Hand" 
+                            FontWeight="Bold" 
+                            Tag="MemorySize" 
+                            Content="Memory" 
+                            MouseDown="ColumnHeader_OnMouseDown" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding DisplayPhysicalMemorySize}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn>
+                        <GridViewColumnHeader 
+                            x:Name="FreeMemorySizeHeader" 
+                            Cursor="Hand" 
+                            FontWeight="Bold" 
+                            Tag="FreeMemorySize" 
+                            Content="Free Memory" 
+                            MouseDown="ColumnHeader_OnMouseDown" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding DisplayFreeMemorySize}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn>
+                        <GridViewColumnHeader 
+                            x:Name="DisplayFreeDiskSizeHeader" 
+                            Cursor="Hand" 
+                            FontWeight="Bold" 
+                            Tag="DisplayFreeDiskSize" 
+                            Content="Free Disk Space" 
+                            MouseDown="ColumnHeader_OnMouseDown" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding DisplayFreeDiskSize}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn>
+                        <GridViewColumnHeader 
+                            x:Name="RootDirHeader" 
+                            Cursor="Hand" 
+                            FontWeight="Bold" 
+                            Tag="RootDir" 
+                            Content="Root Dir" 
+                            MouseDown="ColumnHeader_OnMouseDown" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding monitorData.DiskSpaceMonitor.path}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+
+
+
+        </ListView>
+        
+        <WrapPanel Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Label x:Name="lblTotalNodes" DataContext="{Binding ElementName=_this}"
+               Content="{Binding Computers.Count}"
+               ContentStringFormat="Total: {0}"
+               FontWeight="Bold"
+               HorizontalAlignment="Left" VerticalAlignment="Top" Height="25"/>
+
+            <Label x:Name="lblWindowsNodesCount" DataContext="{Binding ElementName=_this}"
+               Content="{Binding Computers.WindowsNodeCount}"
+               ContentStringFormat="Windows: {0}"
+               FontWeight="Bold"
+               HorizontalAlignment="Left" VerticalAlignment="Top" Height="25"/>
+
+            <Label x:Name="lblLinuxNodesCount" DataContext="{Binding ElementName=_this}"
+               Content="{Binding Computers.LinuxNodeCount}"
+               ContentStringFormat="Linux: {0}"
+               FontWeight="Bold"
+               HorizontalAlignment="Left" VerticalAlignment="Top" Height="25"/>
+
+            <Label x:Name="lblMacNodesCount" DataContext="{Binding ElementName=_this}"
+               Content="{Binding Computers.MacNodeCount}"
+               ContentStringFormat="Mac: {0}"
+               FontWeight="Bold"
+               HorizontalAlignment="Left" VerticalAlignment="Top" Height="25"/>
+            
+            <Label x:Name="lblUnkownNodesCount" DataContext="{Binding ElementName=_this}"
+               Content="{Binding Computers.UnknownNodeCount}"
+               ContentStringFormat="Unknown: {0}"
+               FontWeight="Bold"
+               HorizontalAlignment="Left" VerticalAlignment="Top" Height="25"/>
+
+        </WrapPanel>
+    </Grid>
+</Window>

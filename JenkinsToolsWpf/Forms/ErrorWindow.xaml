@@ -1,0 +1,21 @@
+﻿<Window x:Class="JenkinsToolsetWpf.Forms.ErrorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JenkinsToolsetWpf"
+        mc:Ignorable="d"
+        Title="Error Occurred" Height="216.98" Width="441.573" Loaded="Window_Loaded"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Image x:Name="imgAngryJenkins" HorizontalAlignment="Left" Height="89" VerticalAlignment="Top" Width="86"
+               Source="../Images/rage.png" />
+        <TextBox x:Name="txtException" IsReadOnly="True" VerticalScrollBarVisibility="Auto" Margin="91,44,10,35"
+                 TextWrapping="Wrap" Text="" />
+        <TextBlock x:Name="lblMessage" TextWrapping="WrapWithOverflow"
+                   Text="It appears that unhandled exception has occurred. Please contact a personnel in Continuous Delivery team."
+                   HorizontalAlignment="Left" Margin="91,0,0,0" VerticalAlignment="Top" Width="333" Height="39" />
+        <Button x:Name="btnOK" Content="OK" Margin="0,0,10,10" Height="20" VerticalAlignment="Bottom"
+                HorizontalAlignment="Right" Width="75" Click="btnOK_Click" IsDefault="True" />
+    </Grid>
+</Window>

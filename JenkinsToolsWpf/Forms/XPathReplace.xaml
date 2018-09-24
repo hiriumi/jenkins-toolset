@@ -1,0 +1,21 @@
+﻿<Window x:Class="JenkinsToolsetWpf.Forms.XPathReplace"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JenkinsToolsetWpf.Forms"
+        mc:Ignorable="d"
+        Title="XPathReplace" Height="778.737" Width="726.184">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35*"/>
+            <RowDefinition Height="429*"/>
+        </Grid.RowDefinitions>
+        <TextBox x:Name="txtXPath" Text="XPath Here" Margin="0,0,0,10" />
+        <TabControl Grid.Row="1">
+            <TabItem Header="New">
+                
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

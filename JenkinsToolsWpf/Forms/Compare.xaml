@@ -1,0 +1,203 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:JenkinsToolsetWpf"
+    xmlns:p="clr-namespace:JenkinsToolsetWpf.Properties"
+    xmlns:Controls="clr-namespace:JenkinsToolsetWpf.Controls" x:Class="JenkinsToolsetWpf.Forms.Compare"
+    mc:Ignorable="d"
+    Height="{Binding Source={x:Static p:Settings.Default}, Path=WindowHeight, Mode=TwoWay}"
+    Width="{Binding Source={x:Static p:Settings.Default}, Path=WindowWidth, Mode=TwoWay}"
+    Left="{Binding Source={x:Static p:Settings.Default}, Path=WindowLeft, Mode=TwoWay}"
+    Top="{Binding Source={x:Static p:Settings.Default}, Path=WindowTop, Mode=TwoWay}"
+    WindowState="{Binding Source={x:Static p:Settings.Default}, Path=WindowState, Mode=TwoWay}"
+    WindowStartupLocation="CenterScreen" AllowDrop="True"
+    KeyDown="Window_KeyDown"
+    Loaded="Window_Loaded" 
+    Closing="Window_Closing">
+
+    
+    <Window.Title>
+        <MultiBinding StringFormat="{}{0} #{1}">
+            <Binding Source="{x:Static p:Settings.Default}" Path="AppName"/>
+            <Binding Source="{x:Static p:Settings.Default}" Path="BuildNumber"/>
+        </MultiBinding>
+    </Window.Title>
+    <Window.Resources>
+        <Storyboard x:Key="AnimateMessage" TargetName="lblNotification" TargetProperty="Opacity">
+            <DoubleAnimation From="0" To="1" BeginTime="00:00:00" Duration="00:00:00" />
+            <DoubleAnimation From="1" To="0" BeginTime="00:00:06" Duration="00:00:02" />
+        </Storyboard>
+    </Window.Resources>
+    <Grid Margin="0,0,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="770*" />
+            <RowDefinition Height="69*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="colLeft" Width="309*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition x:Name="colRight" Width="309*" />
+        </Grid.ColumnDefinitions>
+        <DockPanel x:Name="pnlLeft" Grid.Column="0" Grid.Row="0">
+            <Controls:JobList x:Name="LeftJenkinsJobs"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              JenkinsUrl="{Binding Source={x:Static p:Settings.Default}, Path=LeftJenkinsBaseUrl, Mode=TwoWay}"
+                              JenkinsUsername="{Binding Source={x:Static p:Settings.Default}, Path=LeftUsername, Mode=TwoWay}"
+                              JenkinsApiToken="{Binding Source={x:Static p:Settings.Default}, Path=LeftApiToken, Mode=TwoWay}"
+                              JenkinsJobAuthToken="{Binding Source={x:Static p:Settings.Default}, Path=JenkinsJobAuthToken, Mode=TwoWay}"
+                              EditJobs="OnEditJobs"
+                              PushJob="OnPushJobs"
+                              CompareJobs="OnCompareJobs"
+                              DeleteJob="OnDeleteJobs"
+                              LoadJobs="OnLoadJobs"
+                              UndoJobChange="OnUndoJobChange"
+                              CopyJobs="OnCopyJobs"
+                              DuplicateJob="OnDuplicateJob"
+                              SaveJobConfig="OnSaveJobConfig"
+                              BuildJob="OnBuildJob"
+                              UrlRefresh="OnUrlRefresh"
+                              JenkinsApiCredentialChanged="OnJenkinsApiCredentialChanged"
+                              EnableJobs="OnEnableJobs"
+                              DisableJobs="OnDisableJobs"
+                              CopyJobsByDragAndDrop="OnCopyJobsByDragAndDrop"
+                              LoadJobsByDragAndDrop="OnLoadJobsByDragAndDrop"
+                              ShowMessage="OnShowMessage"
+                              RenameJob="OnRenameJob"
+                              RunTestBuild="OnRunTestBuild"
+                              BuildHistory="OnBuildHistory"
+                              CreateFolder="OnCreateFolder"
+                              XPathReplace="OnXPathReplace"
+                              Pane="Left"
+                              FontWeight="{Binding Source={x:Static p:Settings.Default}, Path=LeftPaneFontWeight, Mode=TwoWay}"
+                              FontSize="{Binding Source={x:Static p:Settings.Default}, Path=LeftPaneFontSize, Mode=TwoWay}"
+                              FontFamily="{Binding Source={x:Static p:Settings.Default}, Path=LeftPaneFontFamily, Mode=TwoWay}"
+                              FontStyle="{Binding Source={x:Static p:Settings.Default}, Path=LeftPaneFontStyle, Mode=TwoWay}"
+                              Margin="0,0,0,0" />
+        </DockPanel>
+        <GridSplitter x:Name="splitter" Grid.Column="1" Grid.Row="0" Width="4" Height="150" HorizontalAlignment="Center"
+                      VerticalAlignment="Bottom" Margin="11,70,12,0" BorderThickness="0">
+            <GridSplitter.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Switch Panes" x:Name="mnuSwitchPanes" Click="mnuSwitchPanes_Click" />
+                </ContextMenu>
+            </GridSplitter.ContextMenu>
+        </GridSplitter>
+        <ToolBarTray Grid.Row="0" Grid.Column="1" Orientation="Vertical" VerticalAlignment="Top">
+            <ToolBar>
+                <Button ToolTip="Compare Two Selected Jobs" Click="btnCompare_OnClick" Cursor="Hand">
+                    <Image Source="../Images/Compare_16x.png" Width="16" Height="16" />
+                </Button>
+                <!--<Button ToolTip="Compare All Job Contents" Click="btnCompareAllJobContents_OnClick" Cursor="Hand">
+                    <Image Source="../Images/Question_32xLG.png" Width="16" Height="16" />
+                </Button>-->
+                <!--<Button ToolTip="Search Job" Click="btnSearchJob_Click" Cursor="Hand">
+                    <Image Source="../Images/Search_32x.png" Width="16" Height="16" />
+                </Button>-->
+                <Button ToolTip="Full Screen" Click="btnFullScreen_OnClick" Cursor="Hand">
+                    <Image Source="../Images/ShowLayout_32x.png" Width="16" Height="16"/>
+                </Button>
+                <Button ToolTip="Copy Selected Job(s) to the Right Pane" Click="btnCopyToRightPane_Click" Cursor="Hand">
+                    <Image Source="../Images/arrow_Forward_color_32xLG.png" Width="16" Height="16" />
+                </Button>
+                <Button ToolTip="Copy Selected Job(s) to the Left Pane" Click="btnCopyToLeftPane_Click" Cursor="Hand">
+                    <Image Source="../Images/arrow_back_color_32xLG.png" Width="16" Height="16" />
+                </Button>
+                <Button ToolTip="Refresh (F5)" Click="btnRefresh_OnClick" Cursor="Hand">
+                    <Image Source="../Images/Refresh_32x.png" Width="16" Height="16" />
+                </Button>
+                <ToggleButton x:Name="tbAutoRefreshPanes"
+                              Checked="tbAutoRefreshPanes_Checked"
+                              Unchecked="tbAutoRefreshPanes_Unchecked"
+                              ToolTip="Toggle Auto Refresh Panes"
+                              Cursor="Hand">
+                    <Image Source="../Images/Refresh_inverse_32x.png" Width="16" Height="16" />
+                </ToggleButton>
+            </ToolBar>
+        </ToolBarTray>
+        <DockPanel x:Name="pnlRight" Grid.Column="2" Grid.Row="0">
+            <Controls:JobList x:Name="RightJenkinsJobs"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              JenkinsUrl="{Binding Source={x:Static p:Settings.Default}, Path=RightJenkinsBaseUrl, Mode=TwoWay}"
+                              JenkinsUsername="{Binding Source={x:Static p:Settings.Default}, Path=RightUsername, Mode=TwoWay}"
+                              JenkinsApiToken="{Binding Source={x:Static p:Settings.Default}, Path=RightApiToken, Mode=TwoWay}"
+                              EditJobs="OnEditJobs"
+                              PushJob="OnPushJobs"
+                              CompareJobs="OnCompareJobs"
+                              DeleteJob="OnDeleteJobs"
+                              LoadJobs="OnLoadJobs"
+                              UndoJobChange="OnUndoJobChange"
+                              CopyJobs="OnCopyJobs"
+                              DuplicateJob="OnDuplicateJob"
+                              SaveJobConfig="OnSaveJobConfig"
+                              BuildJob="OnBuildJob"
+                              UrlRefresh="OnUrlRefresh"
+                              JenkinsApiCredentialChanged="OnJenkinsApiCredentialChanged"
+                              EnableJobs="OnEnableJobs"
+                              DisableJobs="OnDisableJobs"
+                              CopyJobsByDragAndDrop="OnCopyJobsByDragAndDrop"
+                              LoadJobsByDragAndDrop="OnLoadJobsByDragAndDrop"
+                              ShowMessage="OnShowMessage"
+                              RenameJob="OnRenameJob"
+                              RunTestBuild="OnRunTestBuild"
+                              BuildHistory="OnBuildHistory"
+                              CreateFolder="OnCreateFolder"
+                              XPathReplace="OnXPathReplace"
+                              Pane="Right"
+                              FontWeight="{Binding Source={x:Static p:Settings.Default}, Path=RightPaneFontWeight, Mode=TwoWay}"
+                              FontSize="{Binding Source={x:Static p:Settings.Default}, Path=RightPaneFontSize, Mode=TwoWay}"
+                              FontFamily="{Binding Source={x:Static p:Settings.Default}, Path=RightPaneFontFamily, Mode=TwoWay}"
+                              FontStyle="{Binding Source={x:Static p:Settings.Default}, Path=RightPaneFontStyle, Mode=TwoWay}"
+                              Margin="0,0,0,0" />
+        </DockPanel>
+
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
+            <Label x:Name="lblLastUpdated"
+                   DataContext="{Binding ElementName=_this}"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Bottom"
+                   FontWeight="Bold"
+                   Width="304"
+                   Height="30"
+                   Margin="10,0,0,10" />
+            <Button x:Name="btnSettings" Width="100" Height="31" Cursor="Hand" HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom" Click="btnSettings_Click" Margin="0,0,6,6">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="../Images/Settings_32xMD.png" />
+                    <Label>Settings...</Label>
+                </StackPanel>
+            </Button>
+            <Label x:Name="lblNotification" ToolTip="Double click here for the last shown message"
+                   Cursor="Hand"
+                   MouseDoubleClick="lblNotification_OnMouseDoubleClick"
+                   Width="622" FontSize="15"
+                   Background="DarkOrange"
+                   HorizontalAlignment="Center"
+                   Foreground="White"
+                   VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                   Opacity="0"
+                   FontWeight="Bold" Height="49" VerticalAlignment="Bottom" Margin="332,0,332,13">
+                <Label.Template>
+                    <ControlTemplate TargetType="{x:Type Label}">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}"
+                                Padding="{TemplateBinding Padding}"
+                                SnapsToDevicePixels="True"
+                                CornerRadius="9">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              RecognizesAccessKey="False"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                    </ControlTemplate>
+                </Label.Template>
+
+                <AccessText TextWrapping="Wrap" />
+            </Label>
+        </Grid>
+    </Grid>
+</Window>

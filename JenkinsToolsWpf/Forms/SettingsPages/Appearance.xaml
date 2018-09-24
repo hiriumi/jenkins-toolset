@@ -1,0 +1,88 @@
+﻿<local:BaseSettingsPage x:Class="JenkinsToolsetWpf.Forms.SettingsPages.Appearance"
+                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                        xmlns:local="clr-namespace:JenkinsToolsetWpf.Forms.SettingsPages"
+                        xmlns:p="clr-namespace:JenkinsToolsetWpf.Properties"
+                        xmlns:System="clr-namespace:System;assembly=mscorlib"
+                        mc:Ignorable="d"
+                        d:DesignHeight="450" d:DesignWidth="450">
+
+    <local:BaseSettingsPage.Resources>
+        <ObjectDataProvider x:Key="selectionModeEnum" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="SelectionMode"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </local:BaseSettingsPage.Resources>
+    <Grid>
+        <Label x:Name="lblItemMouseOverColor" Content="Mouse over item background color" FontWeight="Bold"
+               HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" />
+        <Rectangle
+            x:Name="recItemMouseOverBackgroundColor"
+            MouseDown="recItemMouseOverBackgroundColor_OnMouseDown"
+            Fill="{Binding Source={x:Static p:Settings.Default}, Path=ItemMouseOverBackgroundColor, Mode=OneWay}"
+            Cursor="Hand"
+            HorizontalAlignment="Left"
+            Height="29"
+            Margin="223,10,0,0"
+            Stroke="Black"
+            VerticalAlignment="Top"
+            Width="199" />
+        <GroupBox x:Name="grpAlternativeRowColor" Header="Alternative Row Colors" FontWeight="Bold"
+                  HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" Height="109" Width="412">
+            <Grid>
+                <Label x:Name="lblOddRowColor" Content="Odd Row Color:" FontWeight="Bold" HorizontalAlignment="Left"
+                       Margin="10,10,0,0" VerticalAlignment="Top" />
+                <Rectangle
+                    x:Name="recOddRowColor"
+                    MouseDown="recOddRowColor_OnMouseDown"
+                    Fill="{Binding OddRowColor, Mode=OneWay, Source={x:Static p:Settings.Default}}"
+                    Cursor="Hand"
+                    HorizontalAlignment="Left"
+                    Height="29"
+                    Margin="115,10,0,0"
+                    Stroke="Black"
+                    VerticalAlignment="Top"
+                    Width="199" />
+                <Label x:Name="lblOddRowColor_Copy" Content="Even Row Color:" FontWeight="Bold"
+                       HorizontalAlignment="Left" Margin="10,44,0,0" VerticalAlignment="Top" />
+                <Rectangle
+                    x:Name="recEvenRowColor"
+                    MouseDown="recEvenRowColor_OnMouseDown"
+                    Fill="{Binding EvenRowColor, Mode=OneWay, Source={x:Static p:Settings.Default}}"
+                    Cursor="Hand"
+                    HorizontalAlignment="Left"
+                    Height="29"
+                    Margin="115,44,0,0"
+                    Stroke="Black"
+                    VerticalAlignment="Top"
+                    Width="199" />
+
+            </Grid>
+        </GroupBox>
+
+        <GroupBox x:Name="grpJobSelectionMode" Header="Job Item Selection Mode" FontWeight="Bold" Margin="10,164,28,0" Height="70" VerticalAlignment="Top">
+            <ComboBox x:Name="cboListViewSelectionMode" 
+                  ItemsSource="{Binding Source={StaticResource selectionModeEnum}}" 
+                  SelectedItem="{Binding Source={x:Static p:Settings.Default}, Path=ListViewSelectionMode, Mode=OneWay}" 
+                  HorizontalAlignment="Left" 
+                  Margin="10,10,0,0" 
+                  VerticalAlignment="Top" 
+                  Width="201" Height="26" />
+        </GroupBox>
+        <GroupBox x:Name="grpFilterText" 
+                  Header="Filter Text" 
+                  FontWeight="Bold" 
+                  HorizontalAlignment="Left" 
+                  Height="51" 
+                  Margin="10,243,0,0" 
+                  VerticalAlignment="Top" 
+                  Width="412">
+            <CheckBox x:Name="chkPreserveFilterText" Content="Preserve Filter Text Between Sessions" IsChecked="{Binding Source={x:Static p:Settings.Default}, Path=PreserveFilterText, Mode=OneWay}" Height="21" VerticalAlignment="Top" HorizontalAlignment="Left" Width="247" Margin="0,4,0,0" />
+            
+         </GroupBox>
+
+    </Grid>
+</local:BaseSettingsPage>

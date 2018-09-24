@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="JenkinsToolsetWpf.Controls.FileDirBrowse"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:JenkinsToolsetWpf.Controls"
+             mc:Ignorable="d" d:DesignHeight="42.864" d:DesignWidth="450.178"
+             x:Name="_this" DataContext="{Binding ElementName=_this}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="347*" />
+            <ColumnDefinition Width="103*" />
+        </Grid.ColumnDefinitions>
+        <TextBox x:Name="txtFilePath" GotMouseCapture="txtFilePath_OnGotMouseCapture" VerticalContentAlignment="Center"
+                 Text="{Binding DialogueTextResult}" TextWrapping="NoWrap" Margin="0,0,5,0" />
+        <Button x:Name="btnBrowse" Content="Browse..." Grid.Column="1" Click="btnBrowse_Click" />
+
+    </Grid>
+</UserControl>
