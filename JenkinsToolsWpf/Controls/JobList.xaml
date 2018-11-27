@@ -369,7 +369,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     <GridViewColumn>
-                        <GridViewColumnHeader x:Name="UrlHeader" Cursor="Hand" FontWeight="Bold" Content="Jenkins URL"
+                        <GridViewColumnHeader x:Name="UrlHeader" Cursor="Hand" FontWeight="Bold" Content="Job URL"
                                               MouseDown="ColumnHeader_OnMouseDown" />
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
