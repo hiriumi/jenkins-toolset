@@ -296,7 +296,20 @@ namespace JenkinsLib
                 }
                 
                 var response = await client.SendAsync(request);
-                response.EnsureSuccessStatusCode();
+                try
+                {
+                    response.EnsureSuccessStatusCode();
+                }
+                catch (Exception e)
+                {
+                    if (!e.Message.Contains("403"))
+                    {
+                        throw;
+                    }
+
+                }
+                
+
             }
 
             Name = newJobName;
@@ -503,10 +516,10 @@ namespace JenkinsLib
             catch (HttpRequestException e)
             {
                 //Jenkins redirects to the NewFolder/configure immediate, and it doesn't recognize the 
-                //current user session, so it throws 401 (Unauthorized) after job/folder deletion is successful.
-                //To get around the issue, I'm ignoring 401 exception for now. All other exceptions will be
+                //current user session, so it throws 403 (Unauthorized) after job/folder deletion is successful.
+                //To get around the issue, I'm ignoring 403 exception for now. All other exceptions will be
                 //thrown to the application.
-                if (!e.Message.Contains("401"))
+                if (!e.Message.Contains("403"))
                 {
                     throw;
                 }
