@@ -461,8 +461,20 @@ namespace JenkinsLib
                 {
                     client.DefaultRequestHeaders.Add(crumb.CrumbRequestField, crumb.Crumb);
                 }
-                var response = await client.SendAsync(request);
-                response.EnsureSuccessStatusCode();
+
+                try
+                {
+                    var response = await client.SendAsync(request);
+                    response.EnsureSuccessStatusCode();
+                }
+                catch (Exception e)
+                {
+                    if (!e.Message.Contains("403"))
+                    {
+                        throw;
+                    }
+                }
+                
             }
         }
 
