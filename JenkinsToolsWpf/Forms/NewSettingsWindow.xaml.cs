@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using JenkinsLib;
 using System.Diagnostics;
+using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
 using JenkinsToolsetWpf.Forms.SettingsPages;
 using JenkinsToolsetWpf.Properties;
@@ -33,12 +34,17 @@ namespace JenkinsToolsetWpf.Forms
             var ctlAppearance = new Appearance();
             _optionPages.Add(ctlAppearance.GetType().Name, ctlAppearance);
 
+            var ctlURLs = new URLs();
+            _optionPages.Add(ctlURLs.GetType().Name, ctlURLs);
+
             Resources["OptionPages"] = _optionPages;
-            //lstOptions.ItemsSource = _optionPages;
         }
 
         private void NewSettingsWindows_Loaded(object sender, RoutedEventArgs e)
         {
+            URLs ctlURLs = (URLs)_optionPages["URLs"];
+            ctlURLs.JenkinsApiCredentials = JenkinsApiCredentials;
+
             if (string.IsNullOrEmpty(Settings.Default.OptionPageSelectedItem))
             {
                 // Set the content to the first one in the list
@@ -56,6 +62,7 @@ namespace JenkinsToolsetWpf.Forms
                     }
                 }
             }
+
 
         }
 
@@ -83,6 +90,7 @@ namespace JenkinsToolsetWpf.Forms
                 }
 
                 Settings.Default.Save();
+                DialogResult = true;
             }
             catch (Exception exp)
             {
@@ -99,7 +107,17 @@ namespace JenkinsToolsetWpf.Forms
             Close();
         }
 
-        public ObservableConcurrentDictionary<string, JenkinsCredentialPair> JenkinsApiCredentials { get; set; }
+
+        public static readonly DependencyProperty JenkinsApiCredentialsProperty =
+            DependencyProperty.Register("JenkinsApiCredentials",
+                typeof(ObservableConcurrentDictionary<string, JenkinsCredentialPair>), typeof(NewSettingsWindow));
+        public ObservableConcurrentDictionary<string, JenkinsCredentialPair> JenkinsApiCredentials
+        {
+            get =>
+                (ObservableConcurrentDictionary<string, JenkinsCredentialPair>)
+                GetValue(JenkinsApiCredentialsProperty);
+            set => SetValue(JenkinsApiCredentialsProperty, value);
+        }
 
         private void ListBoxItem_MouseDown(object sender, MouseButtonEventArgs e)
         {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
@@ -509,6 +508,7 @@ namespace JenkinsToolsetWpf.Forms
                 var settingsWindow = new NewSettingsWindow {Owner = this};
                 settingsWindow.JenkinsApiCredentials = _jenkinsApiCredentials;
                 settingsWindow.ShowDialog();
+
             }
             catch (Exception exp)
             {

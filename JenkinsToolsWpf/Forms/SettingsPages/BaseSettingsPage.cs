@@ -3,11 +3,11 @@ using System.Windows.Controls;
 
 namespace JenkinsToolsetWpf.Forms.SettingsPages
 {
-    public abstract class BaseSettingsPage : UserControl
+    public class BaseSettingsPage : UserControl
     {
-        protected BaseSettingsPage()
+        public BaseSettingsPage()
         {
-            
+
         }
 
         public static readonly DependencyProperty PageIconProperty =
@@ -19,6 +19,7 @@ namespace JenkinsToolsetWpf.Forms.SettingsPages
             set { SetValue(PageIconProperty, value); }
         }
 
-        public abstract void SaveSettings();
+        public virtual void SaveSettings()
+        { }
     }
 }

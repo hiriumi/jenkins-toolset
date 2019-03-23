@@ -6,13 +6,14 @@
     xmlns:local="clr-namespace:JenkinsToolsetWpf"
     xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="JenkinsToolsetWpf.Forms.NewSettingsWindow"
     mc:Ignorable="d"
+    xmlns:p="clr-namespace:JenkinsToolsetWpf.Properties"
+    Height="{Binding Source={x:Static p:Settings.Default}, Path=SettingsWindowHeight, Mode=TwoWay}"
+    Width="{Binding Source={x:Static p:Settings.Default}, Path=SettingsWindowWidth, Mode=TwoWay}"
     Icon="../Images/Settings_32xMD.png"
     Title="Settings"
-    Height="599.076"
-    Width="811.721"
     WindowStartupLocation="CenterScreen"
     ShowInTaskbar="False"
-    ResizeMode="NoResize"
+    ResizeMode="CanResizeWithGrip"
     Loaded="NewSettingsWindows_Loaded">
     <Window.Resources>
         <Style TargetType="ListBoxItem" x:Key="DefaultListViewItemStyle">
@@ -28,28 +29,34 @@
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="30*" />
-            <ColumnDefinition Width="83*" />
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="9*" />
         </Grid.ColumnDefinitions>
-        <ListView x:Name="lstOptions" BorderThickness="1" Margin="5,5,5,48"
+        <ListView x:Name="lstOptions" BorderThickness="1" Margin="5,5,0,48"
                   ItemContainerStyle="{StaticResource DefaultListViewItemStyle}"
-                  SelectionChanged="lstOptions_SelectionChanged">
+                  SelectionChanged="lstOptions_SelectionChanged" HorizontalAlignment="Left" Width="137">
             <ListBoxItem x:Name="General" HorizontalAlignment="Stretch">
                 <WrapPanel HorizontalAlignment="Stretch" MouseDown="ListBoxItem_MouseDown">
-                    <Image Source="../Images/SettingsGroup_16x.png" MouseDown="ListBoxItem_MouseDown" />
+                    <Image Source="../Images/SettingsGroup_16x.png" Height="16" Width="16" MouseDown="ListBoxItem_MouseDown" />
                     <TextBlock Text="General" FontSize="14" MouseDown="ListBoxItem_MouseDown" />
                 </WrapPanel>
             </ListBoxItem>
             <ListBoxItem x:Name="ExternalTools" HorizontalAlignment="Stretch">
                 <WrapPanel HorizontalAlignment="Stretch" MouseDown="ListBoxItem_MouseDown">
-                    <Image Source="../Images/toolbox_16xMD.png" MouseDown="ListBoxItem_MouseDown" />
+                    <Image Source="../Images/toolbox_16xMD.png" Height="16" Width="16" MouseDown="ListBoxItem_MouseDown" />
                     <TextBlock Text="External Tools" FontSize="14" MouseDown="ListBoxItem_MouseDown" />
                 </WrapPanel>
             </ListBoxItem>
             <ListBoxItem x:Name="Appearance" HorizontalAlignment="Stretch">
                 <WrapPanel HorizontalAlignment="Stretch" MouseDown="ListBoxItem_MouseDown">
-                    <Image Source="../Images/APIApplication_16x.png" MouseDown="ListBoxItem_MouseDown" />
+                    <Image Source="../Images/APIApplication_16x.png" Height="16" Width="16" MouseDown="ListBoxItem_MouseDown" />
                     <TextBlock Text="Appearance" FontSize="14" MouseDown="ListBoxItem_MouseDown" />
+                </WrapPanel>
+            </ListBoxItem>
+            <ListBoxItem x:Name="URLs" HorizontalAlignment="Stretch">
+                <WrapPanel HorizontalAlignment="Stretch" MouseDown="ListBoxItem_MouseDown">
+                    <Image Source="../Images/Web_32x.png" Height="16" Width="16"  MouseDown="ListBoxItem_MouseDown" />
+                    <TextBlock Text="URLs" FontSize="14" MouseDown="ListBoxItem_MouseDown" />
                 </WrapPanel>
             </ListBoxItem>
         </ListView>
@@ -57,7 +64,7 @@
                 Height="20" VerticalAlignment="Bottom" Click="btnOK_Click" IsDefault="True" />
         <Button x:Name="btnCancel" Content="Cancel" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,90,10"
                 Width="75" Height="20" VerticalAlignment="Bottom" Click="btnCancel_Click" IsCancel="True" />
-        <ContentControl x:Name="pnlMain" HorizontalAlignment="Stretch" Grid.Column="1" Margin="5,5,5,48" />
+        <ContentControl x:Name="pnlMain" Margin="0,5,5,48" Grid.Column="1" />
 
     </Grid>
 </Window>

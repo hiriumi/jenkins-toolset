@@ -35,7 +35,7 @@
                                 BrowseType="File"
                                 DialogueTextResult="{Binding Source={x:Static p:Settings.Default}, Path=TextEditorExePath, Mode=OneWay}"
                                 DialogueTitle="Please select an alternative text editor executable."
-                                DefaultExt=".exe" FileFilter="Exe File (*.exe)|*.exe" Margin="10,192,10,280" />
+                                DefaultExt=".exe" FileFilter="Exe File (*.exe)|*.exe" Margin="10,192,10,0" Height="26" VerticalAlignment="Top" />
 
     </Grid>
 </local:BaseSettingsPage>
