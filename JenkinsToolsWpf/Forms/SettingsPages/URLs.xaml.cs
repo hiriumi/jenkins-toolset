@@ -41,7 +41,7 @@ namespace JenkinsToolsetWpf.Forms.SettingsPages
 
         public static readonly DependencyProperty JenkinsApiCredentialsProperty =
             DependencyProperty.Register("JenkinsApiCredentials",
-                typeof(ObservableConcurrentDictionary<string, JenkinsCredentialPair>), typeof(NewSettingsWindow));
+                typeof(ObservableConcurrentDictionary<string, JenkinsCredentialPair>), typeof(Urls));
         public ObservableConcurrentDictionary<string, JenkinsCredentialPair> JenkinsApiCredentials
         {
             get =>

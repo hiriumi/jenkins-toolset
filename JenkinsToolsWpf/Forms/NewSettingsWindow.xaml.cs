@@ -113,10 +113,16 @@ namespace JenkinsToolsetWpf.Forms
                 typeof(ObservableConcurrentDictionary<string, JenkinsCredentialPair>), typeof(NewSettingsWindow));
         public ObservableConcurrentDictionary<string, JenkinsCredentialPair> JenkinsApiCredentials
         {
-            get =>
-                (ObservableConcurrentDictionary<string, JenkinsCredentialPair>)
-                GetValue(JenkinsApiCredentialsProperty);
-            set => SetValue(JenkinsApiCredentialsProperty, value);
+            get
+            {
+                return (ObservableConcurrentDictionary<string, JenkinsCredentialPair>)
+                    GetValue(JenkinsApiCredentialsProperty);
+            }
+
+            set
+            {
+                SetValue(JenkinsApiCredentialsProperty, value);
+            }
         }
 
         private void ListBoxItem_MouseDown(object sender, MouseButtonEventArgs e)
