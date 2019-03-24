@@ -44,10 +44,16 @@ namespace JenkinsToolsetWpf.Forms.SettingsPages
                 typeof(ObservableConcurrentDictionary<string, JenkinsCredentialPair>), typeof(Urls));
         public ObservableConcurrentDictionary<string, JenkinsCredentialPair> JenkinsApiCredentials
         {
-            get =>
-                (ObservableConcurrentDictionary<string, JenkinsCredentialPair>)
-                GetValue(JenkinsApiCredentialsProperty);
-            set => SetValue(JenkinsApiCredentialsProperty, value);
+            get
+            {
+                return (ObservableConcurrentDictionary<string, JenkinsCredentialPair>)
+                    GetValue(JenkinsApiCredentialsProperty);
+            }
+
+            set
+            {
+                SetValue(JenkinsApiCredentialsProperty, value);
+            }
         }
 
 
