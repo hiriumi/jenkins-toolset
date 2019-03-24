@@ -443,14 +443,18 @@
                     <TextBox x:Name="txtUsername" FontWeight="Bold" Style="{StaticResource DefaultTextBoxStyle}"
                              DataContext="{Binding ElementName=_this}" Text="{Binding Path=JenkinsUsername, Mode=TwoWay}"
                              VerticalAlignment="Center" HorizontalAlignment="Left" Width="174"
-                             TextChanged="txtUserName_OnTextChanged" Height="18" Margin="3" />
+                             TextChanged="txtUserName_OnTextChanged" 
+                             PreviewKeyDown="txtUsername_OnPreviewKeyDown"
+                             Height="18" Margin="3" />
                 </WrapPanel>
                 <WrapPanel>
                     <Label x:Name="lblApiToken" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="71" Height="27" VerticalAlignment="Top">API Token:</Label>
                     <TextBox x:Name="txtApiToken" FontWeight="Bold" Style="{StaticResource DefaultTextBoxStyle}"
                              DataContext="{Binding ElementName=_this}" Text="{Binding Path=JenkinsApiToken, Mode=TwoWay}"
                              VerticalAlignment="Center" HorizontalAlignment="Left" Width="232" 
-                             TextChanged="txtApiToken_OnTextChanged" Height="18" />
+                             TextChanged="txtApiToken_OnTextChanged"
+                             PreviewKeyDown="txtApiToken_OnPreviewKeyDown"
+                             Height="18" />
                     <Button x:Name="btnGetApiToken" Content="Get Token" Click="btnGetApiToken_Click" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" Width="62" Margin="2" Cursor="Hand" />
 
                 </WrapPanel>

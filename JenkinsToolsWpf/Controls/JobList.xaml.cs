@@ -335,6 +335,28 @@ namespace JenkinsToolsetWpf.Controls
                 if (!cboUrl.Text.EndsWith("/"))
                     cboUrl.Text += "/";
 
+                if (UrlHistory != null && !UrlHistory.Contains(cboUrl.Text))
+                {
+                    txtUsername.Clear();
+                    txtApiToken.Clear();
+                    UrlHistory.Add(cboUrl.Text);
+                    JenkinsUrl = cboUrl.Text;
+                }
+
+                if (string.IsNullOrEmpty(txtUsername.Text.Trim()))
+                {
+                    RaiseShowMessageEvent("Please enter username.", MessageType.Error);
+                    txtUsername.Focus();
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(txtApiToken.Text.Trim()))
+                {
+                    RaiseShowMessageEvent("Please enter API Token.", MessageType.Error);
+                    txtApiToken.Focus();
+                    return;
+                }
+                
                 NavigateToUrl(cboUrl.Text);
             }
         }
@@ -352,10 +374,6 @@ namespace JenkinsToolsetWpf.Controls
             }
 
             JenkinsUrl = url;
-            if (UrlHistory != null && !UrlHistory.Contains(JenkinsUrl))
-            {
-                UrlHistory.Add(JenkinsUrl);
-            }
 
             OnPropertyChanged(nameof(JenkinsUrl));
             OnPropertyChanged(nameof(UrlHistory));
@@ -1631,6 +1649,48 @@ namespace JenkinsToolsetWpf.Controls
         private void mnuCreateFolder_Click(object sender, RoutedEventArgs e)
         {
             RaiseCreateFolderEvent();
+        }
+
+        private void HandleTextBoxPreviewKeyDown()
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(txtUsername.Text.Trim()))
+                {
+                    RaiseShowMessageEvent("Please enter username.", MessageType.Error);
+                    txtUsername.Focus();
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(txtApiToken.Text.Trim()))
+                {
+                    RaiseShowMessageEvent("Please enter API Token.", MessageType.Error);
+                    txtApiToken.Focus();
+                    return;
+                }
+
+                NavigateToUrl(cboUrl.Text);
+            }
+            catch (Exception exp)
+            {
+                ExceptionHandler.Handle(exp);
+            }
+        }
+
+        private void txtApiToken_OnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                HandleTextBoxPreviewKeyDown();
+            }
+        }
+
+        private void txtUsername_OnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                HandleTextBoxPreviewKeyDown();
+            }
         }
     }
 }
