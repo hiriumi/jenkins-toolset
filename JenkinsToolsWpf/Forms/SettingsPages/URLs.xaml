@@ -115,7 +115,7 @@
                                 <GridViewColumnHeader 
                                     x:Name="ApiKeyHeader" 
                                     Cursor="Hand" 
-                                    Content="API Key" 
+                                    Content="API Token" 
                                     FontWeight="Bold"
                                     MouseDown="ColumnHeader_OnMouseDown" />
                                 <GridViewColumn.CellTemplate>
