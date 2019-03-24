@@ -150,8 +150,8 @@
     <Compile Include="Forms\Nodes.xaml.cs">
       <DependentUpon>Nodes.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\SettingsPages\URLs.xaml.cs">
-      <DependentUpon>URLs.xaml</DependentUpon>
+    <Compile Include="Forms\SettingsPages\Urls.xaml.cs">
+      <DependentUpon>Urls.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\SettingsPages\Appearance.xaml.cs">
       <DependentUpon>Appearance.xaml</DependentUpon>
@@ -230,7 +230,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\SettingsPages\URLs.xaml">
+    <Page Include="Forms\SettingsPages\Urls.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -11,39 +11,19 @@ using JenkinsLib;
 using JenkinsToolsetWpf.Controls;
 using JenkinsToolsetWpf.Properties;
 using Newtonsoft.Json;
+using Clipboard = System.Windows.Clipboard;
 
 namespace JenkinsToolsetWpf.Forms.SettingsPages
 {
     /// <summary>
     ///     Interaction logic for Appearance.xaml
     /// </summary>
-    public partial class URLs
+    public partial class Urls
     {
-        public URLs()
+        public Urls()
         {
             InitializeComponent();
         }
-
-        //private void URLs_OnLoaded(object sender, RoutedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        if (!string.IsNullOrEmpty(Settings.Default.JenkinsApiCredentials))
-        //        {
-        //            JenkinsApiCredentials =
-        //                JsonConvert.DeserializeObject<ObservableConcurrentDictionary<string, JenkinsCredentialPair>>(
-        //                    Settings.Default.JenkinsApiCredentials);
-        //        }
-        //        else
-        //        {
-        //            JenkinsApiCredentials = new ObservableConcurrentDictionary<string, JenkinsCredentialPair>();
-        //        }
-        //    }
-        //    catch (Exception exp)
-        //    {
-        //        ExceptionHandler.Handle(exp);
-        //    }
-        //}
 
         public override void SaveSettings()
         {
@@ -61,7 +41,7 @@ namespace JenkinsToolsetWpf.Forms.SettingsPages
 
         public static readonly DependencyProperty JenkinsApiCredentialsProperty =
             DependencyProperty.Register("JenkinsApiCredentials",
-                typeof(ObservableConcurrentDictionary<string, JenkinsCredentialPair>), typeof(URLs));
+                typeof(ObservableConcurrentDictionary<string, JenkinsCredentialPair>), typeof(Urls));
         public ObservableConcurrentDictionary<string, JenkinsCredentialPair> JenkinsApiCredentials
         {
             get =>
@@ -79,7 +59,18 @@ namespace JenkinsToolsetWpf.Forms.SettingsPages
 
         private void mnuCopyUrl_Click(object sender, RoutedEventArgs e)
         {
-            
+            try
+            {
+                if (lstURLs.SelectedItem != null)
+                {
+                    var item = (KeyValuePair<string, JenkinsCredentialPair>)lstURLs.SelectedItem;
+                    Clipboard.SetText(item.Key);
+                }
+            }
+            catch (Exception exp)
+            {
+                ExceptionHandler.Handle(exp);
+            }
 
         }
 
@@ -97,6 +88,48 @@ namespace JenkinsToolsetWpf.Forms.SettingsPages
             {
                 ExceptionHandler.Handle(exp);
             }
+        }
+
+        private void mnuCopyApiToken_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (lstURLs.SelectedItem != null)
+                {
+                    var item = (KeyValuePair<string, JenkinsCredentialPair>)lstURLs.SelectedItem;
+                    Clipboard.SetText(item.Value.ApiToken);
+                }
+            }
+            catch (Exception exp)
+            {
+                ExceptionHandler.Handle(exp);
+            }
+        }
+
+        private void mnuCopyUsername_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (lstURLs.SelectedItem != null)
+                {
+                    var item = (KeyValuePair<string, JenkinsCredentialPair>)lstURLs.SelectedItem;
+                    Clipboard.SetText(item.Value.Username);
+                }
+            }
+            catch (Exception exp)
+            {
+                ExceptionHandler.Handle(exp);
+            }
+        }
+
+        private void mnuNavigateToUrl_Click(object sender, RoutedEventArgs e)
+        {
+            if (lstURLs.SelectedItem != null)
+            {
+                var item = (KeyValuePair<string, JenkinsCredentialPair>)lstURLs.SelectedItem;
+                Process.Start(new ProcessStartInfo(item.Key));
+            }
+
         }
     }
 }

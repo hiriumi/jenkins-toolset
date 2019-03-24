@@ -63,7 +63,7 @@ namespace JenkinsToolsetWpf.Controls
                 }
                 else
                 {
-                    EditJobsHanlder(e);
+                    EditJobsHandler(e);
                 }
             }
             catch (Exception exp)
@@ -412,12 +412,6 @@ namespace JenkinsToolsetWpf.Controls
             // font has been changed, so save the settings.
             // Binding will take care of it.
         }
-
-        //private void txtAuthToken_OnGotMouseCapture(object sender, MouseEventArgs e)
-        //{
-        //    txtAuthToken.Focus();
-        //    txtAuthToken.SelectAll();
-        //}
 
         private void JobList_KeyDown(object sender, KeyEventArgs e)
         {
@@ -977,7 +971,7 @@ namespace JenkinsToolsetWpf.Controls
             }
         }
 
-        private void EditJobsHanlder(RoutedEventArgs e)
+        private void EditJobsHandler(RoutedEventArgs e)
         {
             RaiseEditJobsEvent();
         }
@@ -1007,7 +1001,7 @@ namespace JenkinsToolsetWpf.Controls
 
         private void mnuEditJobs_Click(object sender, RoutedEventArgs e)
         {
-            EditJobsHanlder(e);
+            EditJobsHandler(e);
         }
 
         public event JenkinsJobsEventHandler PushJob
@@ -1480,9 +1474,28 @@ namespace JenkinsToolsetWpf.Controls
 
                 if (JenkinsApiCredentials != null)
                 {
+                    //Clean up the deleted URL
+                    for (int i = UrlHistory.Count - 1; i >= 0; i--)
+                    {
+                        if (!JenkinsApiCredentials.ContainsKey(UrlHistory[i]))
+                        {
+                            UrlHistory.RemoveAt(i);
+                            cboUrl.SelectedIndex = 0;
+                            OnPropertyChanged(nameof(JenkinsUrl));
+                            OnPropertyChanged(nameof(UrlHistory));
+
+                            var args = new RoutedEventArgs { RoutedEvent = UrlRefreshEvent };
+                            RaiseEvent(args);
+
+                        }
+                    }
+
                     foreach (var key in JenkinsApiCredentials.Keys)
                     {
-                        UrlHistory.Add(key);
+                        if (!UrlHistory.Contains(key))
+                        {
+                            UrlHistory.Add(key);
+                        }
                     }
                 }
 
@@ -1490,6 +1503,8 @@ namespace JenkinsToolsetWpf.Controls
                 {
                     UrlHistory.Add(JenkinsUrl);
                 }
+
+                
 
                 //UrlHistory.Sort();
 

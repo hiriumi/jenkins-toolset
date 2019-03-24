@@ -504,10 +504,26 @@ namespace JenkinsToolsetWpf.Forms
         {
             try
             {
-                //var settingsWindow = new SettingsWindow();
                 var settingsWindow = new NewSettingsWindow {Owner = this};
-                settingsWindow.JenkinsApiCredentials = _jenkinsApiCredentials;
-                settingsWindow.ShowDialog();
+                //Copy the collection so that making changes to it in the child window won't affect the parent Window immediately.
+                var copiedJenkinsApiCredentials = new ObservableConcurrentDictionary<string, JenkinsCredentialPair>();
+                foreach (var key in _jenkinsApiCredentials.Keys)
+                {
+                    copiedJenkinsApiCredentials.Add(key, (JenkinsCredentialPair) _jenkinsApiCredentials[key].Clone());
+                }
+
+                settingsWindow.JenkinsApiCredentials = copiedJenkinsApiCredentials;
+                if ((bool) settingsWindow.ShowDialog())
+                {
+                    _jenkinsApiCredentials = new ObservableConcurrentDictionary<string, JenkinsCredentialPair>();
+                    // When the user clicks OK, copy the collection back to the original one and refresh.
+                    foreach (var key in copiedJenkinsApiCredentials.Keys)
+                    {
+                        _jenkinsApiCredentials.Add(key, (JenkinsCredentialPair) copiedJenkinsApiCredentials[key].Clone());
+                    }
+
+                    LeftJenkinsJobs.JenkinsApiCredentials = RightJenkinsJobs.JenkinsApiCredentials = _jenkinsApiCredentials;
+            }
 
             }
             catch (Exception exp)

@@ -34,16 +34,16 @@ namespace JenkinsToolsetWpf.Forms
             var ctlAppearance = new Appearance();
             _optionPages.Add(ctlAppearance.GetType().Name, ctlAppearance);
 
-            var ctlURLs = new URLs();
-            _optionPages.Add(ctlURLs.GetType().Name, ctlURLs);
+            var ctlUrls = new Urls();
+            _optionPages.Add(ctlUrls.GetType().Name, ctlUrls);
 
             Resources["OptionPages"] = _optionPages;
         }
 
         private void NewSettingsWindows_Loaded(object sender, RoutedEventArgs e)
         {
-            URLs ctlURLs = (URLs)_optionPages["URLs"];
-            ctlURLs.JenkinsApiCredentials = JenkinsApiCredentials;
+            Urls ctlUrls = (Urls)_optionPages["Urls"];
+            ctlUrls.JenkinsApiCredentials = JenkinsApiCredentials;
 
             if (string.IsNullOrEmpty(Settings.Default.OptionPageSelectedItem))
             {

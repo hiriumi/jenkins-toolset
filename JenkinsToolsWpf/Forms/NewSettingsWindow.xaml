@@ -53,10 +53,10 @@
                     <TextBlock Text="Appearance" FontSize="14" MouseDown="ListBoxItem_MouseDown" />
                 </WrapPanel>
             </ListBoxItem>
-            <ListBoxItem x:Name="URLs" HorizontalAlignment="Stretch">
+            <ListBoxItem x:Name="Urls" HorizontalAlignment="Stretch">
                 <WrapPanel HorizontalAlignment="Stretch" MouseDown="ListBoxItem_MouseDown">
                     <Image Source="../Images/Web_32x.png" Height="16" Width="16"  MouseDown="ListBoxItem_MouseDown" />
-                    <TextBlock Text="URLs" FontSize="14" MouseDown="ListBoxItem_MouseDown" />
+                    <TextBlock Text="Urls" FontSize="14" MouseDown="ListBoxItem_MouseDown" />
                 </WrapPanel>
             </ListBoxItem>
         </ListView>

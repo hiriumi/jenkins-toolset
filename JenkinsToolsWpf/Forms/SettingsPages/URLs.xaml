@@ -1,4 +1,4 @@
-﻿<local:BaseSettingsPage x:Class="JenkinsToolsetWpf.Forms.SettingsPages.URLs"
+﻿<local:BaseSettingsPage x:Class="JenkinsToolsetWpf.Forms.SettingsPages.Urls"
                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -41,7 +41,7 @@
         </ObjectDataProvider>
     </local:BaseSettingsPage.Resources>
     <Grid>
-        <GroupBox x:Name="grpURLs" Header="All URLs" Margin="10">
+        <GroupBox x:Name="grpURLs" Header="All Urls" Margin="10">
             <Grid>
                 <ListView 
                     x:Name="lstURLs" 
@@ -66,12 +66,30 @@
                                     <Image Source="../../Images/CopyToClipboard_32x.png" Height="16" Width="16" />
                                 </MenuItem.Icon>
                             </MenuItem>
+                            <MenuItem Header="Copy Selected Username to Clipboard" x:Name="mnuCopyUsername"
+                                      Click="mnuCopyUsername_Click">
+                            </MenuItem>
+                            <MenuItem Header="Copy Selected API Token to Clipboard" x:Name="mnuCopyApiToken"
+                                      Click="mnuCopyApiToken_Click">
+                            </MenuItem>
+                            <Separator/>
+                            <MenuItem Header="Navigate to the URL" x:Name="mnuNavigateToUrl"
+                                      Click="mnuNavigateToUrl_Click">
+                                <MenuItem.Icon>
+                                    <Image Source="../../Images/GoToSourceCode_32x.png" Height="16" Width="16" />
+                                </MenuItem.Icon>
+                            </MenuItem>
                         </ContextMenu>
                     </ListView.ContextMenu>
                     <ListView.View>
                         <GridView>
                             <GridViewColumn>
-                                <GridViewColumnHeader x:Name="URLsHeader" Cursor="Hand" Content="URLs" MouseDown="ColumnHeader_OnMouseDown"></GridViewColumnHeader>
+                                <GridViewColumnHeader 
+                                    x:Name="URLsHeader" 
+                                    Cursor="Hand" 
+                                    Content="Urls" 
+                                    FontWeight="Bold"
+                                    MouseDown="ColumnHeader_OnMouseDown"></GridViewColumnHeader>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Path=Key}" />
@@ -80,7 +98,12 @@
                             </GridViewColumn>
 
                             <GridViewColumn>
-                                <GridViewColumnHeader x:Name="UsernameHeader" Cursor="Hand" Content="Username" MouseDown="ColumnHeader_OnMouseDown" />
+                                <GridViewColumnHeader 
+                                    x:Name="UsernameHeader" 
+                                    Cursor="Hand" 
+                                    Content="Username" 
+                                    FontWeight="Bold"
+                                    MouseDown="ColumnHeader_OnMouseDown" />
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Path=Value.Username}"/>
@@ -89,7 +112,12 @@
                             </GridViewColumn>
 
                             <GridViewColumn>
-                                <GridViewColumnHeader x:Name="ApiKeyHeader" Cursor="Hand" Content="API Key" MouseDown="ColumnHeader_OnMouseDown" />
+                                <GridViewColumnHeader 
+                                    x:Name="ApiKeyHeader" 
+                                    Cursor="Hand" 
+                                    Content="API Key" 
+                                    FontWeight="Bold"
+                                    MouseDown="ColumnHeader_OnMouseDown" />
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Path=Value.ApiToken}"/>
