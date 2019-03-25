@@ -535,8 +535,7 @@ namespace JenkinsToolsetWpf.Forms
         {
             if (string.IsNullOrEmpty(jobList.JenkinsUrl))
             {
-                MessageBox.Show("Please enter or select the correct Jenkin server URL.", Settings.Default.AppName,
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowMessage("Please enter or select the correct Jenkins server URL.", MessageType.Error);
                 return false;
             }
 

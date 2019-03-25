@@ -203,8 +203,7 @@ namespace JenkinsToolsetWpf.Controls
             {
                 if (string.IsNullOrEmpty(txtUsername.Text))
                 {
-                    MessageBox.Show("Please enter username to proceed.", Settings.Default.AppName,
-                        MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                    RaiseShowMessageEvent("Please enter username to proceed.", MessageType.Error);
                     txtUsername.Focus();
                     return;
                 }
