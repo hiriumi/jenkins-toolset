@@ -419,8 +419,8 @@ namespace JenkinsToolsetWpf.Forms
             var jobList = sender as JobList;
             if (string.IsNullOrEmpty(jobList.JenkinsUrl))
             {
-                MessageBox.Show("Please enter or select the correct Jenkin server URL.", Settings.Default.AppName,
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowMessage("Please enter or select the correct Jenkins server URL.", MessageType.Error);
+                jobList.cboUrl.Focus();
                 return;
             }
 
@@ -429,9 +429,8 @@ namespace JenkinsToolsetWpf.Forms
             if (string.IsNullOrEmpty(Settings.Default.TextEditorExePath) ||
                 !File.Exists(Settings.Default.TextEditorExePath))
             {
-                MessageBox.Show($"Executable for text editor ${Settings.Default.TextEditorExePath} does not exist.",
-                    Settings.Default.AppName,
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowMessage($"Executable for text editor ${Settings.Default.TextEditorExePath} does not exist.",
+                    MessageType.Error);
                 return;
             }
 
