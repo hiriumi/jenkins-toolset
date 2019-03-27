@@ -322,9 +322,11 @@ namespace JenkinsToolsetWpf.Controls
             if (e.Key == Key.Enter)
             {
                 if (string.IsNullOrEmpty(cboUrl.Text.Trim()))
+                {
+                    RaiseShowMessageEvent("Please enter a Jenkins root URL.", MessageType.Error);
+                    cboUrl.Focus();
                     return;
-
-                cboUrl.Focus();
+                }
 
                 if (!cboUrl.Text.StartsWith("https://") && !cboUrl.Text.StartsWith("http://"))
                 {
