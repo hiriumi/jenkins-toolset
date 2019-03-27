@@ -79,8 +79,8 @@
     <Reference Include="NetSparkle.Net40, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NetSparkle.1.1.0\lib\net40-full\NetSparkle.Net40.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework.Classic" />
     <Reference Include="System" />
@@ -100,8 +100,8 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="WpfAnimatedGif, Version=1.4.15.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WpfAnimatedGif.1.4.16\lib\net\WpfAnimatedGif.dll</HintPath>
+    <Reference Include="WpfAnimatedGif, Version=1.4.18.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WpfAnimatedGif.1.4.18\lib\net\WpfAnimatedGif.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
