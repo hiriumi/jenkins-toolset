@@ -61,7 +61,7 @@ namespace JenkinsLib
             get
             {
                 var successCount = this.Count(j => j.Color == "blue");
-                var rate = (float)successCount / Count;
+                var rate = (float)successCount / JobCount;
                 return rate;
             }
         }
@@ -85,7 +85,7 @@ namespace JenkinsLib
             get
             {
                 var failureCount = this.Count(j => j.Color == "red");
-                var rate = (float)failureCount / Count;
+                var rate = (float)failureCount / JobCount;
                 return rate;
             }
         }
@@ -110,7 +110,7 @@ namespace JenkinsLib
             get
             {
                 var failureCount = this.Count(j => j.Color == "aborted");
-                var rate = (float)failureCount / Count;
+                var rate = (float)failureCount / JobCount;
                 return rate;
             }
         }
@@ -140,7 +140,7 @@ namespace JenkinsLib
             get
             {
                 var disabledCount = this.Count(j => j.Color == "disabled");
-                var rate = (float)disabledCount / Count;
+                var rate = (float)disabledCount / JobCount;
                 return rate;
             }
         }
@@ -152,6 +152,11 @@ namespace JenkinsLib
                 var converted = Math.Round(DisabledRate * 10000) / 100.0;
                 return $"{converted}%";
             }
+        }
+
+        public int JobCount
+        {
+            get { return this.Count(j => j.JenkinsNodeType != JenkinsNodeType.Folder); }
         }
 
     }
