@@ -25,7 +25,7 @@ steps:
   inputs:
     scriptName: 'test script 2'
     scriptType: inlineScript
-    inlineScript: "Write-Host 'hoge hoge hoge'"
+    inlineScript: "dir ${env:BUILD_SOURCESDIRECTORY} -Recurse"
 
 - task: NuGetToolInstaller@0
 
