@@ -15,10 +15,11 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: CmdLine@1
+- task: PowerShell@1
   inputs:
-     filename: echo
-     arguments: '${Build.SourcesDirectory}'
+     scriptName: 'test script'
+     scriptType: inlineScript
+     inlineScript: "Write-host ${solution}""
 
 - task: NuGetToolInstaller@0
 
