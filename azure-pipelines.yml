@@ -19,7 +19,7 @@ steps:
   inputs:
      scriptName: 'test script'
      scriptType: inlineScript
-     inlineScript: "Write-host ${solution}"
+     inlineScript: "Write-host hoge ${env:solution}"
 
 - task: NuGetToolInstaller@0
 
