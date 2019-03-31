@@ -15,6 +15,11 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+- task: CmdLine@1
+  inputs:
+     filename: echo
+     arguments: "%Build.SourcesDirectory%"
+
 - task: NuGetToolInstaller@0
 
 - task: NuGetCommand@2
@@ -32,10 +37,6 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: CmdLine@1
-  inputs:
-     filename: echo
-     arguments: "hello world"
 
 - task: ArchiveFiles@1
   inputs:
