@@ -47,7 +47,7 @@ steps:
 - task: ArchiveFiles@1
   inputs:
     archiveType: default
-    rootFolder: ${Build.SourcesDirectory}\JenkinsToolsWpf\bin\Release
+    rootFolder: JenkinsToolsWpf\bin\Release
     includeRootFolder: false
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     replaceExistingArchive: true
