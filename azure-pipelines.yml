@@ -42,4 +42,4 @@ steps:
   inputs:
     scriptName: 'test script 2'
     scriptType: inlineScript
-    inlineScript: "dir ${env:BUILD_SOURCESDIRECTORY} -Recurse"
+    inlineScript: "dir ${env:BUILD_BINARIESDIRECTORY} -Recurse"
