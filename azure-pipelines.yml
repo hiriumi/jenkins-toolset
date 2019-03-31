@@ -33,13 +33,21 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-#- task: VSTest@2
-#  inputs:
-#    platform: '$(buildPlatform)'
-#    configuration: '$(buildConfiguration)'
+# - task: VSTest@2
+#   inputs:
+#     platform: '$(buildPlatform)'
+#     configuration: '$(buildConfiguration)'
 
-- task: PowerShell@1
+# - task: PowerShell@1
+#   inputs:
+#     scriptName: 'test script 2'
+#     scriptType: inlineScript
+#     inlineScript: "dir ${env:BUILD_SOURCESDIRECTORY} -Recurse"
+
+- task: ArchiveFiles@1
   inputs:
-    scriptName: 'test script 2'
-    scriptType: inlineScript
-    inlineScript: "dir ${env:BUILD_BINARIESDIRECTORY} -Recurse"
+    archiveType: default
+    rootFolder: ${Build.SourcesDirectory}\JenkinsToolsWpf\bin\Release
+    includeRootFolder: false
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
