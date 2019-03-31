@@ -17,9 +17,15 @@ variables:
 steps:
 - task: PowerShell@1
   inputs:
-     scriptName: 'test script'
+     scriptName: 'test script 1'
      scriptType: inlineScript
      inlineScript: "gci env:* | sort-object name"
+
+- task: PowerShell@1
+  inputs:
+    scriptName: 'test script 2'
+    scriptType: inlineScript
+    inlineScript: "Write-Host 'hoge hoge hoge'"
 
 - task: NuGetToolInstaller@0
 
