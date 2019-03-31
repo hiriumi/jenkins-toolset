@@ -34,7 +34,7 @@ steps:
 
 - task: ArchiveFiles@1
   inputs:
-    rootFolderOrFile: '$(Build.BinariesDirectory)' 
+    rootFolder: '$(Build.BinariesDirectory)' 
     includeRootFolder: true 
     archiveType: default
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip' 
