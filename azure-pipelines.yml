@@ -19,7 +19,7 @@ steps:
   inputs:
      scriptName: 'test script'
      scriptType: inlineScript
-     inlineScript: "Write-host variables ${env:}"
+     inlineScript: "gci env:* | sort-object name"
 
 - task: NuGetToolInstaller@0
 
