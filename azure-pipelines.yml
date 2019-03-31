@@ -21,12 +21,6 @@ steps:
      scriptType: inlineScript
      inlineScript: "gci env:* | sort-object name"
 
-- task: PowerShell@1
-  inputs:
-    scriptName: 'test script 2'
-    scriptType: inlineScript
-    inlineScript: "dir ${env:BUILD_SOURCESDIRECTORY} -Recurse"
-
 - task: NuGetToolInstaller@0
 
 - task: NuGetCommand@2
@@ -43,3 +37,9 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
+- task: PowerShell@1
+  inputs:
+    scriptName: 'test script 2'
+    scriptType: inlineScript
+    inlineScript: "dir ${env:BUILD_SOURCESDIRECTORY} -Recurse"
