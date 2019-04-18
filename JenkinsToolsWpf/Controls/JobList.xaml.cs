@@ -473,9 +473,6 @@ namespace JenkinsToolsetWpf.Controls
                     case Key.S:
                         RaiseSaveConfigEvent();
                         break;
-                    case Key.T:
-                        RaiseRunTestBuildEvent();
-                        break;
                     case Key.Z:
                         RaiseUndoJobChangeEvent();
                         break;
@@ -826,11 +823,6 @@ namespace JenkinsToolsetWpf.Controls
             RaiseEvent(args);
         }
 
-        private void mnuRunTestBuild_Click(object sender, RoutedEventArgs e)
-        {
-            RaiseRunTestBuildEvent();
-        }
-
         private void mnuXPathReplace_Click(object sender, RoutedEventArgs e)
         {
             var jobs = GetSelectedJobs();
@@ -848,26 +840,6 @@ namespace JenkinsToolsetWpf.Controls
 
             RaiseEvent(args);
         }
-
-        private void RaiseRunTestBuildEvent()
-        {
-            var jobs = GetSelectedJobs(JobState.Orginal);
-            if (jobs.Count == 0)
-            {
-                RaiseShowMessageEvent("Please select at least one published Jenkins job.", MessageType.Warning);
-                return;
-            }
-
-            var args = new JobActionEventArgs
-            {
-                RoutedEvent = RunTestBuildEvent,
-                JenkinsNodes = jobs
-            };
-
-            RaiseEvent(args);
-        }
-
-
 
         private void RaiseCreateFolderEvent()
         {
