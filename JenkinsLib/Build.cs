@@ -68,7 +68,7 @@ namespace JenkinsLib
                 switch (Result)
                 {
                     case "SUCCESS":
-                        _imageFileName = "../Images/green.gif";
+                        _imageFileName = "../Images/blue.gif";
                         break;
                     case "ABORTED":
                         _imageFileName = "../Images/grey.gif";

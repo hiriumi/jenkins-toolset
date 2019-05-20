@@ -261,7 +261,7 @@
 
                         <MenuItem Header="Enable Selected Jobs" x:Name="mnuEnableJobs" Click="mnuEnableJobs_Click">
                             <MenuItem.Icon>
-                                <Image Source="../Images/green.gif" Height="16" Width="16" />
+                                <Image Source="../Images/blue.gif" Height="16" Width="16" />
                             </MenuItem.Icon>
                         </MenuItem>
 

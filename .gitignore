@@ -13,3 +13,4 @@
 /.idea/.idea.jenkins-toolset
 /.vs/JenkinsToolset/v16
 /JenkinsLib.IntegTest/obj
+/JenkinsLib.IntegTest/bin/Debug
