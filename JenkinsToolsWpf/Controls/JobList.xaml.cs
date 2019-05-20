@@ -330,7 +330,7 @@ namespace JenkinsToolsetWpf.Controls
 
                 if (!cboUrl.Text.StartsWith("https://") && !cboUrl.Text.StartsWith("http://"))
                 {
-                    cboUrl.Text = cboUrl.Text.Insert(0, "http://");
+                    cboUrl.Text = cboUrl.Text.Insert(0, "https://");
                 }
                     
                 if (!cboUrl.Text.EndsWith("/"))
