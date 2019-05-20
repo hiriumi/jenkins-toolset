@@ -32,8 +32,7 @@ namespace JenkinsLib
             {
                 if (Color != null)
                 {
-                    var fileName = Color.Replace("blue", "green");
-                    return $"../Images/{fileName}.gif";
+                    return $"../Images/{Color}.gif";
                 }
                 return string.Empty;
             }
