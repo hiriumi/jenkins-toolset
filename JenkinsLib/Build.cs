@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -128,15 +129,26 @@ namespace JenkinsLib
             var request = new HttpRequestMessage(HttpMethod.Post, requestUrl);
 
             request.Headers.Clear();
-
-            using (var client = new HttpClient())
+            try
             {
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
-                client.DefaultRequestHeaders.Add("Authorization", $"Basic {credentialToken}");
-                var response = await client.SendAsync(request);
-                response.EnsureSuccessStatusCode();
+                using (var client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
+                    client.DefaultRequestHeaders.Add("Authorization", $"Basic {credentialToken}");
+                    var response = await client.SendAsync(request);
+                    response.EnsureSuccessStatusCode();
+                }
             }
+            catch (HttpRequestException exp)
+            {
+                if (!exp.Message.Contains("403"))
+                {
+                    Console.WriteLine(exp.ToString());
+                    throw;
+                }
+            }
+
 
         }
     }
