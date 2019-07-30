@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2026
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.202
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JenkinsLib", "JenkinsLib\JenkinsLib.csproj", "{8AA24D12-4B8B-4A53-967C-1D7B42C1F8EC}"
 EndProject
@@ -9,10 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JenkinsToolsetWpf", "Jenkin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JenkinsLib.Test", "JenkinsLib.Test\JenkinsLib.Test.csproj", "{11C47C5C-D18C-4741-B519-8B90E1725E7C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CECFC40B-1082-4A37-999C-C595645D987F}"
-	ProjectSection(SolutionItems) = preProject
-		README.md = README.md
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JenkinsLib.IntegTest", "JenkinsLib.IntegTest\JenkinsLib.IntegTest.csproj", "{180C1AB2-841D-4DBB-B002-31E6EB9D3474}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +29,10 @@ Global
 		{11C47C5C-D18C-4741-B519-8B90E1725E7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11C47C5C-D18C-4741-B519-8B90E1725E7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11C47C5C-D18C-4741-B519-8B90E1725E7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{180C1AB2-841D-4DBB-B002-31E6EB9D3474}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{180C1AB2-841D-4DBB-B002-31E6EB9D3474}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{180C1AB2-841D-4DBB-B002-31E6EB9D3474}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{180C1AB2-841D-4DBB-B002-31E6EB9D3474}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
