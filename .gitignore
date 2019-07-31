@@ -3,13 +3,13 @@
 ################################################################################
 
 /.vs/JenkinsToolset/v15
-/JenkinsLib/bin/Debug
-/JenkinsLib/obj/Debug
-/JenkinsToolsWpf/bin/Debug
-/JenkinsToolsWpf/obj/Debug
+/JenkinsLib/bin
+/JenkinsLib/obj
+/JenkinsToolsWpf/bin
+/JenkinsToolsWpf/obj
 /packages
-/JenkinsLib.Test/obj/Debug
-/JenkinsLib.Test/bin/Debug
-/.idea/.idea.jenkins-toolset
-/.vs/JenkinsToolset/v16
-/JenkinsLib.IntegTest/obj/Debug
+/JenkinsLib.Test/obj
+/JenkinsLib.Test/bin
+/.vs
+/JenkinsLib.IntegTest/obj
+/.idea
