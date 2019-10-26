@@ -13,3 +13,5 @@
 /.vs
 /JenkinsLib.IntegTest/obj
 /.idea
+**/obj
+**/bin
