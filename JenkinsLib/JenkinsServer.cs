@@ -123,8 +123,10 @@ namespace JenkinsLib
         {
             string jsonJob;
             JenkinsNode jenkinsNode = null;
+            var credentialToken = GetCredentialToken(Username, ApiToken);
             using (var client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Add("Authorization", $"Basic {credentialToken}");
                 var response = await client.GetStringAsync($"{JenkinsUrl}job/{jobName}/api/json");
                 jsonJob = response;
             }
@@ -137,9 +139,7 @@ namespace JenkinsLib
                 var parameterToken = responseObject.SelectToken("$.actions[0].parameterDefinitions");
 
                 if (parameterToken != null)
-                    jenkinsNode.Parameters = JsonConvert.DeserializeObject<List<ParameterDef>>(
-                        parameterToken.ToString(),
-                        new ParameterConverter());
+                    jenkinsNode.Parameters = JsonConvert.DeserializeObject<List<ParameterDef>>(parameterToken.ToString(),new ParameterConverter());
             }
 
             return jenkinsNode;
