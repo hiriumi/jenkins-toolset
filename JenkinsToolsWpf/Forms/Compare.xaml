@@ -33,7 +33,7 @@
     <Grid Margin="0,0,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="770*" />
-            <RowDefinition Height="69*" />
+            <RowDefinition Height="33*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition x:Name="colLeft" Width="309*" />
@@ -179,7 +179,7 @@
                    Foreground="White"
                    VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
                    Opacity="0"
-                   FontWeight="Bold" Height="49" VerticalAlignment="Bottom" Margin="332,0,332,13">
+                   FontWeight="Bold" Height="60" VerticalAlignment="Bottom" Margin="332,0,332,13">
                 <Label.Template>
                     <ControlTemplate TargetType="{x:Type Label}">
                         <Border BorderBrush="{TemplateBinding BorderBrush}"
