@@ -33,7 +33,7 @@
     <Grid Margin="0,0,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="770*" />
-            <RowDefinition Height="33*" />
+            <RowDefinition Height="35*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition x:Name="colLeft" Width="309*" />
