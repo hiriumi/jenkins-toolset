@@ -481,7 +481,7 @@
                 </WrapPanel>
                 <WrapPanel>
                     <TextBlock x:Name="lblSuccessCount" Foreground="Green" HorizontalAlignment="Left" VerticalAlignment="Top"
-                               Height="23" FontWeight="Bold" Margin="3" FontSize="15"
+                               Height="23" FontWeight="Bold" Margin="3"
                                DataContext="{Binding ElementName=_this}">
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}Success: {0} ({1})">
