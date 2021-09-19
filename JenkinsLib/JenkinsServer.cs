@@ -38,7 +38,26 @@ namespace JenkinsLib
 
         private bool CsrfEnabled { get; set; } = true;
 
-        public string JenkinsUrl { get; set; }
+        private string _jenkinsUrl;
+        public string JenkinsUrl {
+            get
+            {
+                if (_jenkinsUrl.EndsWith("/"))
+                {
+                    return _jenkinsUrl;
+                }
+                else
+                {
+                    _jenkinsUrl += "/";
+                    return _jenkinsUrl;
+                }
+            }
+            set
+            {
+                _jenkinsUrl = value;
+            }
+        }
+
         public string JenkinsVersion { get; set; }
         public string Username { get; set; }
         public string ApiToken { get; set; }
