@@ -9,6 +9,7 @@ namespace JenkinsLib.IntegTest
         [TestMethod]
         public void TestMethod1()
         {
+            Console.WriteLine("hoge");
         }
     }
 }
