@@ -1823,5 +1823,58 @@ namespace JenkinsToolsetWpf.Forms
                 ExceptionHandler.Handle(exp);
             }
         }
+
+        private async void OnContextMenuHandler(object sender, ContextMenuEventArgs e)
+        {
+            JobList jobList = sender as JobList;
+            if (jobList != null)
+            {
+                JenkinsNode job = e.JenkinsNode;
+                var jenkinsServer = new JenkinsServer
+                {
+                    JenkinsUrl = jobList.JenkinsBaseUrl,
+                    ApiToken = jobList.JenkinsApiToken,
+                    Username = jobList.JenkinsUsername
+                };
+
+                JenkinsNode jobDetail = await jenkinsServer.GetJobDetails(job.Name);
+
+                System.Windows.Controls.MenuItem mnuJenkinsServer = e.ContextMenu.Items[17] as System.Windows.Controls.MenuItem;
+                // Remove the context menu item added for different job
+                for (int i = mnuJenkinsServer.Items.Count - 1; i >= 0; i--)
+                {
+                    System.Windows.Controls.MenuItem item = mnuJenkinsServer.Items[i] as System.Windows.Controls.MenuItem;
+                    if (item != null && item.Tag != null)
+                    {
+                        mnuJenkinsServer.Items.RemoveAt(i);
+                    }
+                }
+
+                if (jobDetail.Parameters != null)
+                {
+                    foreach(var p in jobDetail.Parameters)
+                    {
+                        System.Windows.Controls.MenuItem parItem = new System.Windows.Controls.MenuItem();
+                        parItem.Header = p.Name;
+                        parItem.Tag = jobDetail.Name;
+                        switch(p.Type)
+                        {
+                            case "BooleanParameterDefinition":
+                                break;
+                            case "StringParameterDefinition":
+                                break;
+                            case "ChoiceParameterDefinition":
+                                break;
+                            case "PasswordParameterDefinition":
+                                break;
+                            case "TextParameterDefinition":
+                                break;
+                        }
+                        mnuJenkinsServer.Items.Add(parItem);
+                    }
+                }
+                
+            }
+        }
     }
 }

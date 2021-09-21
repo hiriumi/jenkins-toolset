@@ -70,6 +70,7 @@
                               BuildHistory="OnBuildHistory"
                               CreateFolder="OnCreateFolder"
                               XPathReplace="OnXPathReplace"
+                              ContextMenuHandler="OnContextMenuHandler"
                               Pane="Left"
                               FontWeight="{Binding Source={x:Static p:Settings.Default}, Path=LeftPaneFontWeight, Mode=TwoWay}"
                               FontSize="{Binding Source={x:Static p:Settings.Default}, Path=LeftPaneFontSize, Mode=TwoWay}"
