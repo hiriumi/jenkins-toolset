@@ -107,12 +107,13 @@
                   FontFamily="{Binding FontFamily, Mode=TwoWay}"
                   FontStyle="{Binding FontStyle, Mode=TwoWay}"
                   PreviewMouseLeftButtonDown="lstJenkinsJobs_OnPreviewMouseLeftButtonDown"
+                  PreviewMouseRightButtonDown="lstJenkinsJobs_OnPreviewMouseRightButtonDown"
                   PreviewMouseMove="lstJenkinsJobs_OnPreviewMouseMove"
                   Drop="lstJenkinsJobs_OnDrop"
                   DragEnter="lstJenkinsJobs_OnDragEnter"
                   Margin="5,35,5,5">
             <ListView.ContextMenu>
-                <ContextMenu>
+                <ContextMenu x:Name="ctxContextMenu">
                     <MenuItem Header="Edit Job(s)" x:Name="mnuEditJobs" InputGestureText="Ctrl+E"
                               Click="mnuEditJobs_Click">
                         <MenuItem.Icon>

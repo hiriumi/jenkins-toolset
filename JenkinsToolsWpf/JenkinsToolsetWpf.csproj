@@ -128,6 +128,7 @@
     <Compile Include="Controls\Circle.xaml.cs">
       <DependentUpon>Circle.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ContextMenuEventArgs.cs" />
     <Compile Include="Controls\FontChooser.xaml.cs">
       <DependentUpon>FontChooser.xaml</DependentUpon>
     </Compile>

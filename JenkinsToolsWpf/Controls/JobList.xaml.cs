@@ -436,7 +436,6 @@ namespace JenkinsToolsetWpf.Controls
         {
             if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
-                Debug.WriteLine(e.Key);
                 switch (e.Key)
                 {
                     case Key.A:
@@ -542,6 +541,26 @@ namespace JenkinsToolsetWpf.Controls
             _startPoint = e.GetPosition(null);
         }
 
+        private void lstJenkinsJobs_OnPreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ButtonState == MouseButtonState.Pressed && e.ChangedButton == MouseButton.Right)
+            {
+                var jenkinsNode = lstJenkinsJobs.SelectedItem as JenkinsNode;
+                if (jenkinsNode != null)
+                {
+                    var args = new ContextMenuEventArgs
+                    {
+                        RoutedEvent = ContextMenuEvent,
+                        JenkinsNode = jenkinsNode,
+                        ContextMenu = lstJenkinsJobs.ContextMenu
+                    };
+
+                    
+                    RaiseEvent(args);
+                }
+            }
+        }
+
         private void lstJenkinsJobs_OnDrop(object sender, DragEventArgs e)
         {
             var sourceJobList = e.Data.GetData("dragSource") as JobList;
@@ -622,6 +641,8 @@ namespace JenkinsToolsetWpf.Controls
 
         public delegate void JenkinsJobsEventHandler(object sender, JobActionEventArgs e);
 
+        public delegate void ContextMenuEventHandler(object sender, ContextMenuEventArgs e);
+
         public delegate void ShowMessageEventHandler(object sender, MessageEventArgs e);
 
         public static readonly RoutedEvent EditJobsEvent = EventManager.RegisterRoutedEvent("EditJobsEvent",
@@ -698,6 +719,15 @@ namespace JenkinsToolsetWpf.Controls
 
         public static readonly RoutedEvent XPathReplaceEvent = EventManager.RegisterRoutedEvent("XPathReplace",
             RoutingStrategy.Bubble, typeof(JenkinsJobsEventHandler), typeof(JobList));
+
+        public static readonly RoutedEvent ContextMenuEvent = EventManager.RegisterRoutedEvent("ContextMenu",
+            RoutingStrategy.Bubble, typeof(ContextMenuEventHandler), typeof(JenkinsNode));
+
+        public event ContextMenuEventHandler ContextMenuHandler
+        {
+            add { AddHandler(ContextMenuEvent, value); }
+            remove { RemoveHandler(ContextMenuEvent, value); }
+        }
 
         public event JenkinsJobsEventHandler XPathReplace
         {
