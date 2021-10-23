@@ -1371,7 +1371,15 @@ namespace JenkinsToolsetWpf.Forms
                 msg += $"Jenkins URL: {jobList.JenkinsUrl}\r\n";
                 msg += $"Username: {jobList.JenkinsUsername}\r\n";
                 msg += $"API Token: {jobList.JenkinsApiToken}\r\n\r\n";
-                msg += $"Actual error message: {exp.Message}";
+                if (exp.InnerException != null)
+                {
+                    msg += $"Actual error message: {exp.InnerException.Message}";
+                }
+                else
+                {
+                    msg += $"Actual error message: {exp.Message}";
+                }
+                
 
                 MessageBox.Show(msg, Settings.Default.AppName, MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -1837,7 +1845,13 @@ namespace JenkinsToolsetWpf.Forms
                     Username = jobList.JenkinsUsername
                 };
 
-                JenkinsNode jobDetail = await jenkinsServer.GetJobDetails(job.Name);
+                JenkinsNode jobDetail = null;
+                jobDetail = await jenkinsServer.GetJobDetails(job.Name);
+                
+                if (jobDetail == null)
+                {
+                    return;
+                }
 
                 System.Windows.Controls.MenuItem mnuJenkinsServer = e.ContextMenu.Items[17] as System.Windows.Controls.MenuItem;
                 // Remove the context menu item added for different job
@@ -1852,28 +1866,101 @@ namespace JenkinsToolsetWpf.Forms
 
                 if (jobDetail.Parameters != null)
                 {
-                    foreach(var p in jobDetail.Parameters)
-                    {
-                        System.Windows.Controls.MenuItem parItem = new System.Windows.Controls.MenuItem();
-                        parItem.Header = p.Name;
-                        parItem.Tag = jobDetail.Name;
-                        switch(p.Type)
-                        {
-                            case "BooleanParameterDefinition":
-                                break;
-                            case "StringParameterDefinition":
-                                break;
-                            case "ChoiceParameterDefinition":
-                                break;
-                            case "PasswordParameterDefinition":
-                                break;
-                            case "TextParameterDefinition":
-                                break;
-                        }
-                        mnuJenkinsServer.Items.Add(parItem);
-                    }
+                    AddParamMenuItem(mnuJenkinsServer, jobDetail);
                 }
                 
+            }
+        }
+
+        private void AddParamMenuItem(System.Windows.Controls.MenuItem parentMenuItem, 
+            JenkinsNode jobDetail)
+        {
+            if (jobDetail.Parameters != null)
+            {
+                foreach(var p in jobDetail.Parameters)
+                {
+                    var parItem = new System.Windows.Controls.MenuItem();
+                    parItem.Tag = p.Name;
+
+                    System.Windows.Controls.Grid grd;
+                    System.Windows.Controls.TextBlock lblText;
+                    switch (p.Type)
+                    {
+                        case "BooleanParameterDefinition":
+                            var chkBox = new System.Windows.Controls.CheckBox();
+                            chkBox.Content = p.Name;
+                            chkBox.Name = p.Name;
+                            parItem.Header = chkBox;
+                            break;
+                        case "StringParameterDefinition":
+                            grd = new System.Windows.Controls.Grid();
+                            grd.ColumnDefinitions.Add(new System.Windows.Controls.ColumnDefinition());
+                            grd.ColumnDefinitions.Add(new System.Windows.Controls.ColumnDefinition());
+
+                            lblText = new System.Windows.Controls.TextBlock();
+                            grd.Children.Add(lblText);
+                            lblText.Text = $"{p.Name} ";
+                            System.Windows.Controls.Grid.SetColumn(lblText, 0);
+
+                            var txtBox = new System.Windows.Controls.TextBox();
+                            txtBox.Width = 100;
+                            grd.Children.Add(txtBox);
+                            System.Windows.Controls.Grid.SetColumn(txtBox, 1);
+
+                            parItem.Header = grd;
+                            break;
+                        case "ChoiceParameterDefinition":
+                            grd = new System.Windows.Controls.Grid();
+                            grd.ColumnDefinitions.Add(new System.Windows.Controls.ColumnDefinition());
+                            grd.ColumnDefinitions.Add(new System.Windows.Controls.ColumnDefinition());
+
+                            lblText = new System.Windows.Controls.TextBlock();
+                            grd.Children.Add(lblText);
+                            lblText.Text = $"{p.Name} ";
+                            System.Windows.Controls.Grid.SetColumn(lblText, 0);
+
+                            var cboChoice = new System.Windows.Controls.ComboBox();
+                            cboChoice.Width = 100;
+                            if (p.choices != null)
+                            {
+                                foreach(var choice in p.choices)
+                                {
+                                    cboChoice.Items.Add(choice);
+                                }
+                            }
+                            grd.Children.Add(cboChoice);
+                            System.Windows.Controls.Grid.SetColumn(cboChoice, 1);
+
+                            parItem.Header = grd;
+                            break;
+                        case "PasswordParameterDefinition":
+                            grd = new System.Windows.Controls.Grid();
+                            grd.ColumnDefinitions.Add(new System.Windows.Controls.ColumnDefinition());
+                            grd.ColumnDefinitions.Add(new System.Windows.Controls.ColumnDefinition());
+
+                            lblText = new System.Windows.Controls.TextBlock();
+                            grd.Children.Add(lblText);
+                            lblText.Text = $"{p.Name} ";
+                            System.Windows.Controls.Grid.SetColumn(lblText, 0);
+
+                            parItem.Header = grd;
+                            break;
+                        case "TextParameterDefinition":
+                            grd = new System.Windows.Controls.Grid();
+                            grd.ColumnDefinitions.Add(new System.Windows.Controls.ColumnDefinition());
+                            grd.ColumnDefinitions.Add(new System.Windows.Controls.ColumnDefinition());
+
+                            lblText = new System.Windows.Controls.TextBlock();
+                            grd.Children.Add(lblText);
+                            lblText.Text = $"{p.Name} ";
+                            System.Windows.Controls.Grid.SetColumn(lblText, 0);
+
+                            parItem.Header = grd;
+                            break;
+                    }
+
+                    parentMenuItem.Items.Add(parItem);
+                }
             }
         }
     }

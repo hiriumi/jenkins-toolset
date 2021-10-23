@@ -14,5 +14,7 @@ namespace JenkinsLib
 
         [JsonConverter(typeof(ParameterConverter))]
         public string Value { get; set; }
+
+        public string[] choices { get; set; }
     }
 }

@@ -143,6 +143,15 @@ namespace JenkinsLib
             string jsonJob;
             JenkinsNode jenkinsNode = null;
             var credentialToken = GetCredentialToken(Username, ApiToken);
+
+            // if (!UrlExists())
+            string url = $"{JenkinsUrl}job/{jobName}/api/json";
+            bool urlExists = await UrlExists(url, Username, ApiToken);
+            if (!urlExists)
+            {
+                return null;
+            }
+
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("Authorization", $"Basic {credentialToken}");
@@ -253,7 +262,7 @@ namespace JenkinsLib
             Debug.WriteLine($"sourceFolderName: {sourceFolderName}");
 
             //Does the destination folder exist?
-            var urlOk = await urlExists(destinationRootUrl, targetJenkinsUsername, targetJenkinsApiToken);
+            var urlOk = await UrlExists(destinationRootUrl, targetJenkinsUsername, targetJenkinsApiToken);
             if (!urlOk)
             {
                 throw new Exception($"Destination folder \"{destinationRootUrl}\" does not exist.");
@@ -266,7 +275,7 @@ namespace JenkinsLib
                 destinationFolder.JenkinsNodeType == JenkinsNodeType.Folder)
             {
                 var destUrl = $"{destinationRootUrl}job/{sourceFolderName}";
-                var destFolderExists = await urlExists(destUrl, targetJenkinsUsername, targetJenkinsApiToken);
+                var destFolderExists = await UrlExists(destUrl, targetJenkinsUsername, targetJenkinsApiToken);
 
                 if (!destFolderExists)
                 {
@@ -286,7 +295,7 @@ namespace JenkinsLib
                     newTargetFolder = $"{destinationRootUrl}job/{sourceFolderName}/{newTargetFolder}";
 
                     // Does the target folder exist? If not, create it.
-                    var folderExists = await urlExists(newTargetFolder, targetJenkinsUsername, targetJenkinsApiToken);
+                    var folderExists = await UrlExists(newTargetFolder, targetJenkinsUsername, targetJenkinsApiToken);
 
                     if (!folderExists)
                     {
@@ -309,7 +318,7 @@ namespace JenkinsLib
 
 
                     var targetJobUrl = targetFolderUrl + jobToCopy.Name;
-                    var targetJobExists = await urlExists(targetJobUrl, targetJenkinsUsername, targetJenkinsApiToken);
+                    var targetJobExists = await UrlExists(targetJobUrl, targetJenkinsUsername, targetJenkinsApiToken);
 
                     var jobXml = await jobToCopy.GetConfigXml(sourceJenkinsUsername, sourceJenkinsApiToken);
 
@@ -351,7 +360,7 @@ namespace JenkinsLib
             return result.ToString();
         }
 
-        public async Task<bool> urlExists(string url, string username, string apiToken)
+        public async Task<bool> UrlExists(string url, string username, string apiToken)
         {
             var credentialToken = GetCredentialToken(username, apiToken);
 
